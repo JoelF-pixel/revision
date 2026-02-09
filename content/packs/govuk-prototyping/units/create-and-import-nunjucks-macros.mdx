@@ -1,0 +1,73 @@
+---
+id: unit.create-and-import-nunjucks-macros
+type: unit
+title: Create and import Nunjucks macros
+summary: Build a reusable macro and import it cleanly across pages.
+estimatedMinutes: 50
+difficulty: practitioner
+doneWhen:
+  - "You’ve created a macro and used it on at least 2 pages."
+  - "The macro accepts parameters and renders correctly."
+teaches:
+  - what-is-a-macro
+  - create-custom-macros
+  - use-macros-for-items
+---
+
+## Goal
+
+Stop duplicating markup by extracting a reusable component.
+
+## When to use
+
+Use macros when you repeat the same pattern across pages (especially with small variations).
+
+## Steps
+
+1) Identify repeated markup (copy/pasted blocks or similar components).
+2) Create a macro file (e.g. `app/views/macros/` or a shared folder).
+3) Import it in a page template.
+4) Pass parameters so you can reuse it with different labels/values.
+
+## Code (minimal example)
+
+### A) Create a macro
+
+```njk
+{# app/views/macros/summary-row.njk #}
+{% macro summaryRow(keyText, valueHtml, changeHref) %}
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">{{ keyText }}</dt>
+    <dd class="govuk-summary-list__value">{{ valueHtml | safe }}</dd>
+    <dd class="govuk-summary-list__actions">
+      <a class="govuk-link" href="{{ changeHref }}">Change<span class="govuk-visually-hidden"> {{ keyText }}</span></a>
+    </dd>
+  </div>
+{% endmacro %}
+```
+
+### B) Import + use it
+
+```njk
+{% from "macros/summary-row.njk" import summaryRow %}
+
+<dl class="govuk-summary-list">
+  {{ summaryRow("Name", data.name, "/name") }}
+  {{ summaryRow("Email", data.email, "/email") }}
+</dl>
+```
+
+## Common mistakes
+
+- Putting macros in a folder that isn’t on the template search path.
+- Forgetting `| safe` when passing HTML (or incorrectly using it on untrusted content).
+- Over-engineering: macros should stay small and focused.
+
+## Next units
+
+- [Nunjucks macros vs HTML for design system components](./should-i-use-nunjucks-macros-or-html-for-design-system-components)
+
+## Notes
+
+Source inspiration: hippo-prototyping discussion
+https://github.com/hippo-digital/hippo-prototyping/discussions/40

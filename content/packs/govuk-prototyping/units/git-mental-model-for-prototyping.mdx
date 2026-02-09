@@ -1,0 +1,61 @@
+---
+id: unit.git-mental-model
+type: unit
+title: Git mental model (for prototyping)
+summary: Understand commits, branches, remotes, and how GitHub fits in.
+estimatedMinutes: 35
+difficulty: working
+doneWhen:
+  - You can explain what a commit is, in one sentence.
+  - You can explain what a branch is, in one sentence.
+  - You can push to GitHub and pull changes down.
+teaches:
+  - terminal-basics
+  - introduction-to-git-and-github
+  - git-basics
+---
+
+## Goal
+
+Use Git confidently enough that you don’t avoid it.
+
+## The 4 concepts you actually need
+
+1) **Working tree**
+- The files on your laptop.
+
+2) **Commit**
+- A named snapshot of your files.
+- If you can’t undo a mistake, it’s usually because you didn’t commit.
+
+3) **Branch**
+- A label pointing at a series of commits.
+- You make branches so you can change things without breaking `main`.
+
+4) **Remote (GitHub)**
+- A copy of your repo on the internet.
+- You push/pull to sync.
+
+## Practical workflow (the happy path)
+
+1) Make a branch
+- `git checkout -b my-change`
+
+2) Make a small change
+
+3) Commit
+- `git status`
+- `git add -A`
+- `git commit -m "Explain what changed"`
+
+4) Push
+- `git push -u origin my-change`
+
+5) Open a PR
+- Review + merge.
+
+## What to do when you’re scared
+
+- Commit more often.
+- Keep commits small.
+- If you’re unsure, create a branch first. Branches are cheap.

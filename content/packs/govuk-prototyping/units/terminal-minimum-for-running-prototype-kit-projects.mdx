@@ -1,0 +1,67 @@
+---
+id: unit.terminal-minimum-for-prototype-kits
+type: unit
+title: Terminal minimum for running Prototype Kit projects
+summary: Learn the small set of terminal commands you need to install dependencies, run the kit, and read errors.
+estimatedMinutes: 20
+difficulty: working
+categoryId: setup-and-deployment
+levelId: working
+order: 2
+doneWhen:
+  - You can navigate into a repo directory using `cd`.
+  - You can install dependencies with `npm install`.
+  - You can start and stop the dev server (`npm run dev`, then `Ctrl + C`).
+  - You can use Tab to autocomplete paths.
+teaches:
+  - terminal-basics
+  - running-the-kit-locally
+  - restarting-the-kit
+  - npm-packages
+---
+
+## Goal
+
+Be self-sufficient enough to run a prototype kit and diagnose basic issues.
+
+## Commands you will use constantly
+
+Navigation:
+- Where am I?: `pwd`
+- What’s in this folder?: `ls`
+- Go home: `cd ~` (or just `cd`)
+- Go into a folder: `cd folder-name`
+- Go up one folder: `cd ..`
+- Autocomplete a path: press `Tab`
+
+Running the kit:
+- Install packages: `npm install`
+- Run locally (common): `npm run dev` (sometimes `npm start`)
+- Stop it: `Ctrl + C`
+
+Tip:
+- Use the up arrow to cycle through previous commands.
+
+## Recommended folder layout (Mac)
+
+Keep projects in one predictable place.
+
+Example:
+- `mkdir -p ~/Repos`
+- `cd ~/Repos`
+- `git clone <repo-url>`
+- `cd <repo-folder>`
+
+## Using Terminal inside VS Code (optional but efficient)
+
+If you don’t want a separate Terminal window:
+- VS Code menu: View → Terminal
+- Toggle terminal panel: `Ctrl + \``
+- Focus editor: `Ctrl + 1`
+
+## Common problems
+
+- **"command not found: npm"** → Node/npm isn’t installed correctly (or PATH is wrong).
+- **You’re in the wrong folder** → run `pwd` and check you’re inside the repo.
+- **The server won’t stop** → make sure your terminal has focus, then press `Ctrl + C`.
+- **Weird missing module errors** → try `npm install` again; if still broken, deleting `node_modules` is a last resort.

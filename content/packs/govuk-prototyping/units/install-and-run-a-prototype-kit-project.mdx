@@ -1,0 +1,48 @@
+---
+id: unit.install-and-run-kit
+type: unit
+title: Install and run a prototype kit project
+summary: Clone a kit repo, install dependencies, and start the dev server.
+estimatedMinutes: 30
+difficulty: working
+categoryId: setup-and-deployment
+levelId: working
+order: 3
+doneWhen:
+  - You can start the kit with `npm run dev` or `npm start`.
+  - You can load the prototype in your browser.
+  - You know where to look when it fails (terminal output first).
+teaches:
+  - installing-the-kit
+  - nodejs-basics
+  - terminal-basics
+---
+
+## Goal
+
+Get a prototype kit project running locally.
+
+## Steps
+
+1) Clone the repository
+- `git clone <repo-url>`
+- `cd <repo>`
+
+2) Install dependencies
+- `npm install`
+
+3) Start the server
+- Run whichever script the repo provides:
+  - `npm run dev` (common for Next.js / modern projects)
+  - `npm start` (common for the prototype kit)
+
+4) Open the site
+- The terminal will print the URL (usually `http://localhost:3000`).
+
+## If it fails
+
+- **Read the first error** in the terminal output (ignore the noise below it).
+- Common fixes:
+  - Wrong Node version → install/switch to the required Node version.
+  - `npm install` fails → delete `node_modules` + `package-lock.json` then reinstall (only if you understand you’re re-resolving deps).
+  - Port already in use → stop the other server or change port.

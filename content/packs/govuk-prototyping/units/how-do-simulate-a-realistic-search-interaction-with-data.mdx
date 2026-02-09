@@ -1,0 +1,101 @@
+---
+id: unit.simulate-realistic-search
+type: unit
+title: Simulate a realistic search interaction with data
+summary: Prototype a search flow using structured data and basic filtering.
+estimatedMinutes: 50
+difficulty: practitioner
+doneWhen:
+  - "Users can enter a query and see filtered results."
+  - "The results page handles empty/no-match states."
+  - "The search state survives at least one navigation step (back/forward or refine)."
+teaches:
+  - searching-filtering-lists
+  - using-external-json-files
+  - using-data-across-pages
+---
+
+## Goal
+
+Make a prototype search feel real without building a full backend.
+
+## When to use
+
+Use this when UR needs a believable dataset + search UI (not just a static list).
+
+## Steps
+
+1) Create a small dataset (JSON) with realistic fields.
+2) Build a search form that submits with **GET** (query string).
+3) Filter the dataset server-side and render the results list.
+4) Handle edge cases: empty query, no results, too many results.
+
+## Code (minimal example)
+
+### A) Dataset
+
+```js
+// app/data/things.json (example)
+[
+  { "id": "A1", "name": "Alpha House", "postcode": "LS1 1AA" },
+  { "id": "B2", "name": "Beta House", "postcode": "LS2 2BB" }
+]
+```
+
+### B) Route handler (filter)
+
+```js
+// routes.js
+const things = require('./data/things.json')
+
+router.get('/search/results', function (req, res) {
+  const q = String(req.query.q || '').trim().toLowerCase()
+
+  const results = q
+    ? things.filter(x =>
+        String(x.name).toLowerCase().includes(q) ||
+        String(x.postcode).toLowerCase().includes(q)
+      )
+    : []
+
+  return res.render('search/results', { q, results })
+})
+```
+
+### C) Template
+
+```njk
+<form method="get" action="/search/results">
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="q">Search</label>
+    <input class="govuk-input" id="q" name="q" value="{{ q }}" />
+  </div>
+  <button class="govuk-button" type="submit">Search</button>
+</form>
+
+{% if q and results.length === 0 %}
+  <p class="govuk-body">No results</p>
+{% endif %}
+
+<ul class="govuk-list">
+  {% for r in results %}
+    <li>{{ r.name }} ({{ r.postcode }})</li>
+  {% endfor %}
+</ul>
+```
+
+## Common mistakes
+
+- Doing search with POST (makes URLs non-shareable; GET is usually better here).
+- Not preserving the query value in the input.
+- Not handling the empty query state.
+
+## Next units
+
+- [Create and use realistic data in a prototype](./create-and-use-realistic-data-in-my-prototype)
+- [Simulate a journey for different types of users](./how-could-i-simulate-a-journey-for-different-types-of-users)
+
+## Notes
+
+Source inspiration: hippo-prototyping discussion
+https://github.com/hippo-digital/hippo-prototyping/discussions/63

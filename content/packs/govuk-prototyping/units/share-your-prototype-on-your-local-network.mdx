@@ -1,0 +1,44 @@
+---
+id: unit.share-on-lan
+type: unit
+title: Share your prototype on your local network
+summary: Let someone else on the same Wi‑Fi open your in-progress prototype.
+estimatedMinutes: 20
+difficulty: working
+categoryId: setup-and-deployment
+levelId: working
+order: 6
+doneWhen:
+  - You can give someone a URL they can open from another device.
+  - You understand the difference between localhost and LAN IP.
+teaches:
+  - terminal-basics
+  - debugging
+---
+
+## Goal
+
+Share your prototype with someone nearby without deploying it.
+
+## Steps
+
+1) Start your dev server
+- `npm start` (or `npm run dev`)
+
+2) Find the LAN URL
+- Many dev servers print something like:
+  - Local: `http://localhost:3000`
+  - Network: `http://192.168.x.x:3000`
+
+3) If you don’t see a network URL
+- Find your IP address (Mac):
+  - System Settings → Network → Wi‑Fi → Details
+
+4) Give the URL to a colleague
+- Example: `http://192.168.1.9:3000`
+
+## Common problems
+
+- **Firewall blocks it** → allow incoming connections for Node / your dev server.
+- **Different Wi‑Fi** → they must be on the same network.
+- **VPN** → can interfere; try disabling if it’s safe to do so.

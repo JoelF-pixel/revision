@@ -1,0 +1,81 @@
+---
+id: unit.check-your-details
+type: unit
+title: Check your details (pattern)
+summary: Implement a realistic “check your answers” page with change links that return to the summary.
+estimatedMinutes: 45
+difficulty: working
+doneWhen:
+  - "Your summary page displays answers captured from previous pages."
+  - "Change links let users edit answers and return to the summary page."
+  - "Your routing cleanly handles the 'change then return' behaviour."
+teaches:
+  - linking-pages
+  - redirecting-with-logic
+---
+
+## Goal
+
+Build a realistic **Check your details** page that behaves like a real service:
+- users review answers
+- users can change answers
+- after a change they return to the summary
+
+## When to use
+
+Use this pattern when you need a credible end-to-end journey (UR, stakeholder demos, handoff).
+
+## Steps
+
+1) Build a short journey (2–3 questions) that stores answers in session.
+2) Create a summary page ("check your details") that outputs those answers.
+3) Add **Change** links that take the user back to the relevant question page.
+4) Intercept the form submission for the changed answer so you can **redirect back to the summary**.
+
+## Code (minimal example)
+
+### A) Add a flag when the user hits the summary
+
+```js
+// routes.js
+router.get('/check-your-details', function (req, res) {
+  req.session.data.__journeyComplete = true
+  return res.render('check-your-details')
+})
+```
+
+### B) Route the “changed answer” POST via routes.js
+
+Instead of posting to the next page, post to a route handler:
+
+```html
+<form action="/question-1-answer" method="post">
+  <!-- inputs -->
+</form>
+```
+
+Then redirect depending on whether we’re in “change-mode” (journey complete):
+
+```js
+// routes.js
+router.post('/question-1-answer', function (req, res) {
+  const complete = req.session.data.__journeyComplete
+
+  if (complete) {
+    return res.redirect('/check-your-details')
+  }
+
+  return res.redirect('/question-2')
+})
+```
+
+## Common mistakes
+
+- Posting directly to the next page (`action="question-2"`) so you can’t intercept the redirect.
+- Forgetting to reset `__journeyComplete` when restarting the journey.
+- Not handling the case where changing an answer should trigger additional questions.
+
+## Next units
+
+- [Simulate error handling in a prototype](./simulate-error-handling-in-my-prototype)
+- [Create and use realistic data in a prototype](./create-and-use-realistic-data-in-my-prototype)

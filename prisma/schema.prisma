@@ -1,0 +1,98 @@
+// Prisma schema for proto-learning-app
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SkillRing {
+  WORKING
+  PRACTITIONER
+  EXPERT
+}
+
+enum SkillQuadrant {
+  SETUP_AND_DEPLOYMENT
+  PAGES_AND_LAYOUTS
+  COMPONENTS_AND_PATTERNS
+  DATA_AND_LOGIC
+}
+
+enum ProgressStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETE
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  memberships  TeamMember[]
+  skillRatings SkillRating[]
+  unitProgress UnitProgress[]
+}
+
+model Team {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members TeamMember[]
+}
+
+model TeamMember {
+  id        String   @id @default(cuid())
+  teamId    String
+  userId    String
+  role      String   @default("member")
+  createdAt DateTime @default(now())
+
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, userId])
+}
+
+model SkillRating {
+  id        String     @id @default(cuid())
+  userId    String
+  packId    String     // content pack id (e.g. govuk-prototyping)
+  skillId   String     // stable id from content index (frontmatter id)
+  rating    Int        // UI scale (e.g. 0-3 or 1-5)
+  ring      SkillRing?
+  updatedAt DateTime   @updatedAt
+  createdAt DateTime   @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, packId, skillId])
+  @@index([packId])
+  @@index([skillId])
+}
+
+model UnitProgress {
+  id        String         @id @default(cuid())
+  userId    String
+  packId    String         // content pack id
+  unitId    String         // stable id from content index
+  status    ProgressStatus @default(NOT_STARTED)
+  updatedAt DateTime       @updatedAt
+  createdAt DateTime       @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, packId, unitId])
+  @@index([packId])
+  @@index([unitId])
+}

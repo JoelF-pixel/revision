@@ -1,0 +1,35 @@
+---
+id: views-and-page-templates
+name: Views and page templates
+title: Views and page templates
+quadrant: Pages and Layouts
+ring: Working
+order: 1
+status: No Change
+requiresSkills:
+taughtByUnits:
+kitTags:
+  - govuk
+  - nhs
+---
+
+## What is this skill?
+
+A view is the visual template that renders what users see in the browser. In the prototype kit, views are Nunjucks files in the app/views folder that combine HTML, design system components, and dynamic data. Views use template inheritance ('extends') to share common layouts across pages.
+
+## Why is it important?
+
+- **Page creation** – Views are where you build the actual screens users interact with
+- **Consistency** – All pages automatically share the same layout through inheritance
+- **Efficiency** – Don't repeat header and footer code on every page
+- **Separation of concerns** – Keeping views separate from routes makes code more organised
+- **Template reuse** – Views can extend layouts and include partials
+- **Maintainability** – Change the layout once to update all pages
+- **Data display** – Views receive data from routes and display it dynamically
+
+## Where to learn more
+
+- [GOV.UK Prototype Kit: Create pages](https://prototype-kit.service.gov.uk/docs/create-pages)
+- [GOV.UK Prototype Kit: Templates and layouts](https://prototype-kit.service.gov.uk/docs/templates-and-layouts)
+- [Nunjucks: Template inheritance](https://mozilla.github.io/nunjucks/templating.html#template-inheritance)
+- [Express.js: Using template engines](https://expressjs.com/en/guide/using-template-engines.html)

@@ -1,0 +1,77 @@
+---
+id: unit.productive-prototyping-workstation
+type: unit
+title: Set up a productive prototyping workstation
+summary: Optimise your screen, tools, and folder layout so you spend time designing — not wrestling your setup.
+estimatedMinutes: 20
+difficulty: working
+categoryId: setup-and-deployment
+levelId: working
+order: 4
+doneWhen:
+  - You can see VS Code, a terminal, and a browser (with DevTools) without constantly resizing windows.
+  - Your prototype repos live in a consistent folder you can reach quickly from Terminal.
+  - You can run the kit and immediately see build output/errors.
+teaches:
+  - setting-up-vs-code
+  - terminal-basics
+  - using-browser-devtools
+  - folder-structure
+---
+
+## Goal
+
+Make your coding setup “low friction” for prototype kit work.
+
+## Steps
+
+1) Standardise on VS Code
+- Use **Visual Studio Code** unless you have a strong reason not to.
+- The main benefit is supportability: other designers/engineers can help you, pair with you, and recommend extensions.
+
+2) Maximise screen space
+- Ideal: **two screens**.
+  - Screen 1: VS Code
+  - Screen 2: Browser + DevTools
+- If you only have one screen, aim for a layout where you can quickly get to:
+  - VS Code
+  - Terminal output (build status + errors)
+  - Browser
+
+Mac tip:
+- System Settings → Desktop & Dock → enable **Automatically hide and show the Dock**.
+
+3) Keep Terminal output visible
+- When a prototype is running, the terminal tells you:
+  - whether it rebuilt successfully
+  - what route/template crashed
+  - stack traces and warnings
+
+Practical options:
+- Terminal as a separate window beside VS Code, or
+- Terminal inside VS Code (View → Terminal).
+
+4) Store repos in a consistent location
+Pick one folder and stick to it.
+
+Example (Mac):
+- Create a folder:
+  - `mkdir -p ~/Repos`
+- Put all prototype projects inside:
+  - `~/Repos/dfe-something`
+  - `~/Repos/nhse-something-else`
+
+The payoff: terminal navigation becomes muscle memory.
+
+5) Use a tight “edit → save → reload” loop
+A fast loop keeps you in flow:
+- Save: `CMD + S`
+- Switch app: `CMD + Tab`
+- Reload browser: `CMD + R`
+- Switch back: `CMD + Tab`
+
+## Common problems
+
+- **You can’t see errors** → make Terminal output visible (or use VS Code’s integrated terminal).
+- **Repos scattered everywhere** → pick one `~/Repos` (or `~/Projects`) folder and move projects into it.
+- **Too much window switching** → try a second monitor, or lean harder on keyboard shortcuts.

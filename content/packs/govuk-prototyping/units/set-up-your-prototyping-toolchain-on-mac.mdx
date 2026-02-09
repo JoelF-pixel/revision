@@ -1,0 +1,61 @@
+---
+id: unit.setup-toolchain-mac
+type: unit
+title: Set up your prototyping toolchain (Mac)
+summary: Install the minimum tools (Terminal, VS Code, Node, Git) so you can run a prototype kit locally.
+estimatedMinutes: 45
+difficulty: working
+categoryId: setup-and-deployment
+levelId: working
+order: 1
+doneWhen:
+  - You can run `node -v`, `npm -v`, and `git --version` successfully.
+  - You can open VS Code from the terminal.
+  - You can clone a repo and run `npm install`.
+teaches:
+  - terminal-basics
+  - nodejs-basics
+  - installing-the-kit
+  - introduction-to-git-and-github
+  - git-basics
+---
+
+## Goal
+
+Get your machine ready to work on prototype kit projects.
+
+## Steps
+
+1) Install VS Code
+- Download: https://code.visualstudio.com/
+- In VS Code: open the Command Palette → **Shell Command: Install 'code' command in PATH**
+
+2) Install Git
+- In Terminal, run:
+  - `git --version`
+- If it’s missing, install Xcode Command Line Tools:
+  - `xcode-select --install`
+
+3) Install Node.js
+- For the GOV.UK / NHS kits you should use the Node version the kit asks for.
+- Check requirements for your kit version (they change over time).
+- Verify:
+  - `node -v`
+  - `npm -v`
+
+4) Create a workspace folder
+- Example:
+  - `mkdir -p ~/Projects/prototyping`
+  - `cd ~/Projects/prototyping`
+
+5) Sanity check: clone + install
+- Pick any prototype kit repo you have access to.
+- `git clone <repo-url>`
+- `cd <repo>`
+- `npm install`
+
+## Common problems
+
+- **"command not found: code"** → you didn’t install VS Code’s shell command.
+- **Permissions / EACCES during npm install** → you’re probably using a global install path incorrectly; fix your Node install, don’t sudo npm.
+- **Wrong Node version** → switch Node versions (best with a version manager) to match the kit.

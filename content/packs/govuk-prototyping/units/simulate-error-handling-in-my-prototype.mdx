@@ -1,0 +1,84 @@
+---
+id: unit.simulate-error-handling
+type: unit
+title: Simulate error handling in a prototype
+summary: Add realistic validation and error states without overengineering.
+estimatedMinutes: 40
+difficulty: working
+doneWhen:
+  - "You can trigger at least two distinct error states intentionally."
+  - "Error messages are clear and appear in the right place(s)."
+teaches:
+  - simulate-errors
+  - error-page-handling
+---
+
+## Goal
+
+Prototype what happens when something goes wrong.
+
+## When to use
+
+Use this whenever you want UR to cover failure states (missing data, invalid input, service unavailable).
+
+## Steps
+
+1) Choose 2 error cases (e.g. missing required field; invalid format).
+2) Add validation for one form submission.
+3) Add a second failure state (custom error page or error summary).
+
+## Code (minimal example)
+
+### A) Validate a required field
+
+```js
+// routes.js
+router.post('/email', function (req, res) {
+  const email = String(req.session.data.email || '').trim()
+
+  if (!email) {
+    // render same page with an error flag
+    return res.render('email', { errorEmailRequired: true })
+  }
+
+  return res.redirect('/check-your-details')
+})
+```
+
+### B) Show an error summary + inline message
+
+```njk
+{% if errorEmailRequired %}
+  <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1">
+    <h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>
+    <div class="govuk-error-summary__body">
+      <ul class="govuk-list govuk-error-summary__list">
+        <li><a href="#email">Enter an email address</a></li>
+      </ul>
+    </div>
+  </div>
+{% endif %}
+
+<div class="govuk-form-group{% if errorEmailRequired %} govuk-form-group--error{% endif %}">
+  <label class="govuk-label" for="email">Email</label>
+  {% if errorEmailRequired %}
+    <p class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Enter an email address</p>
+  {% endif %}
+  <input class="govuk-input{% if errorEmailRequired %} govuk-input--error{% endif %}" id="email" name="email" />
+</div>
+```
+
+## Common mistakes
+
+- Only showing errors in one place (summary but not inline, or vice versa).
+- Not letting the user recover (no clear path back).
+- Making validation too strict for a prototype.
+
+## Next units
+
+- [Check your details (pattern)](./check-your-details)
+
+## Notes
+
+Source inspiration: hippo-prototyping discussion
+https://github.com/hippo-digital/hippo-prototyping/discussions/59

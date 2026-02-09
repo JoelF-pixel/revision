@@ -1,0 +1,16 @@
+{
+  "id": "skills-for-content-designers",
+  "name": "Skills for content designers",
+  "description": "A starter pack for content designers: writing, structuring, and shipping content in digital services.",
+  "categories": [
+    { "id": "content-foundations", "title": "Content foundations" },
+    { "id": "service-content", "title": "Service content" },
+    { "id": "content-ops", "title": "Content ops" },
+    { "id": "measurement-and-improvement", "title": "Measurement and improvement" }
+  ],
+  "levels": [
+    { "id": "working", "title": "Working" },
+    { "id": "practitioner", "title": "Practitioner" },
+    { "id": "expert", "title": "Expert" }
+  ]
+}

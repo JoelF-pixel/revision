@@ -1,0 +1,26 @@
+---
+id: unit.support-multiple-filters-files
+type: unit
+title: Support multiple filters files
+summary: Split filters per version/area and control how they are loaded.
+estimatedMinutes: 40
+difficulty: practitioner
+doneWhen:
+  - "You can load different filters for different versions."
+  - "You can explain which filter wins when names clash."
+teaches:
+  - custom-nunjucks-filters
+  - managing-versions
+---
+
+## Goal
+
+Keep helper functions (filters) maintainable as prototypes grow.
+
+## Steps
+
+1) Create two versions/areas that need different filters.
+2) Split filters into separate files.
+3) Wire loading order and test.
+
+Source inspiration: hippo-prototyping “how-to”.

@@ -1,0 +1,88 @@
+---
+id: unit.vscode-productivity-essentials
+type: unit
+title: VS Code productivity essentials for prototyping
+summary: Learn a small set of VS Code habits (shortcuts + command palette) that make everyday edits much faster.
+estimatedMinutes: 25
+difficulty: working
+categoryId: setup-and-deployment
+levelId: working
+order: 5
+doneWhen:
+  - You can use the Command Palette to run common actions without hunting menus.
+  - You can do common edits (move lines, duplicate lines, comment/uncomment) using shortcuts.
+  - You can jump to a specific line number in a file.
+teaches:
+  - setting-up-vs-code
+  - terminal-shortcuts
+  - debugging
+---
+
+## Goal
+
+Speed up the boring bits: navigation, formatting, and repetitive edits.
+
+## The one VS Code feature to master: Command Palette
+
+Open the command palette:
+- `Shift + CMD + P`
+
+Why it matters:
+- Almost everything VS Code can do is available here.
+- Extensions also show up here.
+- Recently-used actions float to the top.
+
+### Useful command palette patterns
+Try these once so they’re “in your hands”:
+
+- **Change the case of text**
+  1) Select text
+  2) `Shift + CMD + P`
+  3) Type part of the command name (for example: `sent`)
+  4) Pick the case-changing command and press Enter
+
+- **Turn lines into bullet points (Markdown)**
+  1) Select a few lines
+  2) `Shift + CMD + P`
+  3) Search for “bullet” / list formatting
+  4) Apply
+
+- **Wrap selected text**
+  - Select text → `Shift + CMD + P` → search “wrap”
+
+## Keyboard shortcuts worth memorising (Mac)
+
+You do not need 50 shortcuts. Learn ~10 and you’ll feel it immediately.
+
+Editing:
+- Move line(s) up/down: `Alt + Up/Down`
+- Duplicate line(s) up/down: `Alt + Shift + Up/Down`
+- Comment/uncomment line: `CMD + /`
+- Toggle word wrap: `Alt + Z`
+
+Navigation:
+- Start/end of line: `CMD + Left/Right`
+- Jump to line: `Ctrl + G`
+- Switch tabs: `Alt + CMD + Left/Right`
+
+App switching loop (fast prototyping):
+- Save: `CMD + S`
+- Switch app: `CMD + Tab`
+- Reload browser: `CMD + R`
+
+## A practical mini-exercise (5 minutes)
+
+1) Open any template in your prototype (for example `app/views/...`)
+2) Make a small change (add a hint, fix a label)
+3) Use only keyboard to:
+- save
+- switch to browser
+- refresh
+- switch back
+
+Repeat 3 times.
+
+## Common problems
+
+- **Command palette feels slow** → it gets fast once you stop aiming for the perfect command name; type a few letters and hit Enter.
+- **Shortcuts don’t work** → check for conflicts (some apps override global shortcuts).

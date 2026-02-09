@@ -1,0 +1,29 @@
+---
+id: unit.dev-vs-prod-behaviour
+type: unit
+title: Use features differently between dev and production
+summary: Add simple switches so prototypes behave differently when developing vs sharing.
+estimatedMinutes: 45
+difficulty: practitioner
+doneWhen:
+  - "You can toggle at least one behaviour (e.g. debug output) based on environment." 
+  - "The default shared experience is clean (no debug noise)."
+teaches:
+  - environment-variables
+  - password-protection
+---
+
+## Goal
+
+Keep dev conveniences without leaking them into shared prototypes.
+
+## Steps
+
+1) Decide what should differ between dev and shared environments.
+2) Use an environment variable (or config) to gate the behaviour.
+3) Verify both modes.
+
+## Notes
+
+Source inspiration: hippo-prototyping discussion
+https://github.com/hippo-digital/hippo-prototyping/discussions/52

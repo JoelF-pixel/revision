@@ -1,0 +1,16 @@
+{
+  "id": "govuk-prototyping",
+  "name": "GOV.UK / NHS Prototyping Kit",
+  "description": "Skill-first learning and reference content for the GOV.UK Prototype Kit and NHS variants.",
+  "categories": [
+    { "id": "setup-and-deployment", "title": "Setup and deployment" },
+    { "id": "pages-and-layouts", "title": "Pages and layouts" },
+    { "id": "components-and-patterns", "title": "Components and patterns" },
+    { "id": "data-and-logic", "title": "Data and logic" }
+  ],
+  "levels": [
+    { "id": "working", "title": "Working" },
+    { "id": "practitioner", "title": "Practitioner" },
+    { "id": "expert", "title": "Expert" }
+  ]
+}
