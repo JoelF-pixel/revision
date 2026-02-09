@@ -1,0 +1,17 @@
+{
+  "id": "aqa-biology-higher",
+  "name": "AQA GCSE Biology (Separate) — Higher",
+  "description": "GCSE Biology (AQA Separate/Triple) Higher revision pack: skills, lessons, self-assessment, and practice questions aligned to the specification.",
+  "categories": [
+    { "id": "cell-biology", "title": "Cell biology" },
+    { "id": "organisation", "title": "Organisation" },
+    { "id": "infection-and-response", "title": "Infection and response" },
+    { "id": "bioenergetics", "title": "Bioenergetics" },
+    { "id": "required-practicals", "title": "Required practicals" }
+  ],
+  "levels": [
+    { "id": "recall", "title": "Recall" },
+    { "id": "apply", "title": "Apply" },
+    { "id": "exam", "title": "Exam" }
+  ]
+}

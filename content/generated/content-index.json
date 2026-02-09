@@ -1,7 +1,143 @@
 {
-  "generatedAt": "2026-02-06T00:23:09.202Z",
+  "generatedAt": "2026-02-09T23:44:21.641Z",
   "defaultPackId": "govuk-prototyping",
   "packs": {
+    "aqa-biology-higher": {
+      "manifest": {
+        "id": "aqa-biology-higher",
+        "name": "AQA GCSE Biology (Separate) — Higher",
+        "description": "GCSE Biology (AQA Separate/Triple) Higher revision pack: skills, lessons, self-assessment, and practice questions aligned to the specification.",
+        "categories": [
+          {
+            "id": "cell-biology",
+            "title": "Cell biology"
+          },
+          {
+            "id": "organisation",
+            "title": "Organisation"
+          },
+          {
+            "id": "infection-and-response",
+            "title": "Infection and response"
+          },
+          {
+            "id": "bioenergetics",
+            "title": "Bioenergetics"
+          },
+          {
+            "id": "required-practicals",
+            "title": "Required practicals"
+          }
+        ],
+        "levels": [
+          {
+            "id": "recall",
+            "title": "Recall"
+          },
+          {
+            "id": "apply",
+            "title": "Apply"
+          },
+          {
+            "id": "exam",
+            "title": "Exam"
+          }
+        ]
+      },
+      "skills": [
+        {
+          "id": "diffusion-osmosis-active-transport",
+          "packId": "aqa-biology-higher",
+          "name": "Transport in cells (diffusion, osmosis, active transport)",
+          "title": "Transport in cells (diffusion, osmosis, active transport)",
+          "description": "1) Which processes need a membrane? 2) Which process needs energy? 3) What happens to an animal cell in a very dilute solution?",
+          "quadrant": "Cell biology",
+          "ring": "Apply",
+          "categoryId": "cell-biology",
+          "levelId": "apply",
+          "order": 1,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.transport-in-cells"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/diffusion-osmosis-active-transport.mdx"
+        }
+      ],
+      "skillsById": {
+        "diffusion-osmosis-active-transport": {
+          "id": "diffusion-osmosis-active-transport",
+          "packId": "aqa-biology-higher",
+          "name": "Transport in cells (diffusion, osmosis, active transport)",
+          "title": "Transport in cells (diffusion, osmosis, active transport)",
+          "description": "1) Which processes need a membrane? 2) Which process needs energy? 3) What happens to an animal cell in a very dilute solution?",
+          "quadrant": "Cell biology",
+          "ring": "Apply",
+          "categoryId": "cell-biology",
+          "levelId": "apply",
+          "order": 1,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.transport-in-cells"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/diffusion-osmosis-active-transport.mdx"
+        }
+      },
+      "units": [
+        {
+          "id": "unit.transport-in-cells",
+          "packId": "aqa-biology-higher",
+          "title": "Transport in cells (diffusion, osmosis, active transport)",
+          "summary": "Understand the 3 key transport processes, apply them to real GCSE scenarios, and avoid common exam traps.",
+          "teaches": [
+            "diffusion-osmosis-active-transport"
+          ],
+          "estimatedMinutes": 35,
+          "difficulty": "apply",
+          "doneWhen": [
+            "You can correctly define diffusion, osmosis, and active transport.",
+            "You can apply them to examples (lungs, gut, root hair cells, dialysis).",
+            "You can answer 1–3 mark questions without mixing up the processes."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.transport-in-cells.mdx"
+        }
+      ],
+      "unitsById": {
+        "unit.transport-in-cells": {
+          "id": "unit.transport-in-cells",
+          "packId": "aqa-biology-higher",
+          "title": "Transport in cells (diffusion, osmosis, active transport)",
+          "summary": "Understand the 3 key transport processes, apply them to real GCSE scenarios, and avoid common exam traps.",
+          "teaches": [
+            "diffusion-osmosis-active-transport"
+          ],
+          "estimatedMinutes": 35,
+          "difficulty": "apply",
+          "doneWhen": [
+            "You can correctly define diffusion, osmosis, and active transport.",
+            "You can apply them to examples (lungs, gut, root hair cells, dialysis).",
+            "You can answer 1–3 mark questions without mixing up the processes."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.transport-in-cells.mdx"
+        }
+      },
+      "skillLinks": []
+    },
     "govuk-prototyping": {
       "manifest": {
         "id": "govuk-prototyping",
