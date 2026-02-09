@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-09T23:54:14.866Z",
+  "generatedAt": "2026-02-09T23:56:29.734Z",
   "defaultPackId": "govuk-prototyping",
   "packs": {
     "aqa-biology-higher": {
@@ -82,6 +82,30 @@
             "higher"
           ],
           "sourcePath": "content/packs/aqa-biology-higher/skills/homeostasis-basics.mdx"
+        },
+        {
+          "id": "osmosis-in-plant-and-animal-cells",
+          "packId": "aqa-biology-higher",
+          "name": "Osmosis in plant vs animal cells (turgid/flaccid/plasmolysed)",
+          "title": "Osmosis in plant vs animal cells (turgid/flaccid/plasmolysed)",
+          "quadrant": "Paper 1",
+          "ring": "Apply",
+          "categoryId": "paper-1",
+          "levelId": "apply",
+          "order": 3,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.transport-in-cells"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/osmosis-in-plant-and-animal-cells.mdx"
         },
         {
           "id": "p1-bioenergetics-map",
@@ -276,6 +300,55 @@
             "higher"
           ],
           "sourcePath": "content/packs/aqa-biology-higher/skills/p2-required-practicals.mdx"
+        },
+        {
+          "id": "required-practical-osmosis",
+          "packId": "aqa-biology-higher",
+          "name": "Required practical: osmosis in potato cylinders",
+          "title": "Required practical: osmosis in potato cylinders",
+          "quadrant": "Paper 1",
+          "ring": "Exam",
+          "categoryId": "paper-1",
+          "levelId": "exam",
+          "order": 20,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.transport-in-cells"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/required-practical-osmosis.mdx"
+        },
+        {
+          "id": "surface-area-and-diffusion",
+          "packId": "aqa-biology-higher",
+          "name": "Surface area and diffusion (cells + exchange surfaces)",
+          "title": "Surface area and diffusion (cells + exchange surfaces)",
+          "description": "More surface area = more particles can cross per second.",
+          "quadrant": "Paper 1",
+          "ring": "Apply",
+          "categoryId": "paper-1",
+          "levelId": "apply",
+          "order": 2,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.transport-in-cells"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/surface-area-and-diffusion.mdx"
         }
       ],
       "skillsById": {
@@ -328,6 +401,30 @@
             "higher"
           ],
           "sourcePath": "content/packs/aqa-biology-higher/skills/homeostasis-basics.mdx"
+        },
+        "osmosis-in-plant-and-animal-cells": {
+          "id": "osmosis-in-plant-and-animal-cells",
+          "packId": "aqa-biology-higher",
+          "name": "Osmosis in plant vs animal cells (turgid/flaccid/plasmolysed)",
+          "title": "Osmosis in plant vs animal cells (turgid/flaccid/plasmolysed)",
+          "quadrant": "Paper 1",
+          "ring": "Apply",
+          "categoryId": "paper-1",
+          "levelId": "apply",
+          "order": 3,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.transport-in-cells"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/osmosis-in-plant-and-animal-cells.mdx"
         },
         "p1-bioenergetics-map": {
           "id": "p1-bioenergetics-map",
@@ -522,6 +619,55 @@
             "higher"
           ],
           "sourcePath": "content/packs/aqa-biology-higher/skills/p2-required-practicals.mdx"
+        },
+        "required-practical-osmosis": {
+          "id": "required-practical-osmosis",
+          "packId": "aqa-biology-higher",
+          "name": "Required practical: osmosis in potato cylinders",
+          "title": "Required practical: osmosis in potato cylinders",
+          "quadrant": "Paper 1",
+          "ring": "Exam",
+          "categoryId": "paper-1",
+          "levelId": "exam",
+          "order": 20,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.transport-in-cells"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/required-practical-osmosis.mdx"
+        },
+        "surface-area-and-diffusion": {
+          "id": "surface-area-and-diffusion",
+          "packId": "aqa-biology-higher",
+          "name": "Surface area and diffusion (cells + exchange surfaces)",
+          "title": "Surface area and diffusion (cells + exchange surfaces)",
+          "description": "More surface area = more particles can cross per second.",
+          "quadrant": "Paper 1",
+          "ring": "Apply",
+          "categoryId": "paper-1",
+          "levelId": "apply",
+          "order": 2,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.transport-in-cells"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/surface-area-and-diffusion.mdx"
         }
       },
       "units": [
@@ -669,7 +815,10 @@
           "title": "Transport in cells (diffusion, osmosis, active transport)",
           "summary": "Understand the 3 key transport processes, apply them to real GCSE scenarios, and avoid common exam traps.",
           "teaches": [
-            "diffusion-osmosis-active-transport"
+            "diffusion-osmosis-active-transport",
+            "surface-area-and-diffusion",
+            "osmosis-in-plant-and-animal-cells",
+            "required-practical-osmosis"
           ],
           "estimatedMinutes": 35,
           "difficulty": "apply",
@@ -826,7 +975,10 @@
           "title": "Transport in cells (diffusion, osmosis, active transport)",
           "summary": "Understand the 3 key transport processes, apply them to real GCSE scenarios, and avoid common exam traps.",
           "teaches": [
-            "diffusion-osmosis-active-transport"
+            "diffusion-osmosis-active-transport",
+            "surface-area-and-diffusion",
+            "osmosis-in-plant-and-animal-cells",
+            "required-practical-osmosis"
           ],
           "estimatedMinutes": 35,
           "difficulty": "apply",
