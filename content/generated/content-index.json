@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-09T23:49:36.878Z",
+  "generatedAt": "2026-02-09T23:54:14.866Z",
   "defaultPackId": "govuk-prototyping",
   "packs": {
     "aqa-biology-higher": {
@@ -82,6 +82,200 @@
             "higher"
           ],
           "sourcePath": "content/packs/aqa-biology-higher/skills/homeostasis-basics.mdx"
+        },
+        {
+          "id": "p1-bioenergetics-map",
+          "packId": "aqa-biology-higher",
+          "name": "Bioenergetics map (what to revise)",
+          "title": "Bioenergetics map (what to revise)",
+          "quadrant": "Paper 1",
+          "ring": "Recall",
+          "categoryId": "paper-1",
+          "levelId": "recall",
+          "order": 4,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.paper1-bioenergetics-overview"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/p1-bioenergetics-map.mdx"
+        },
+        {
+          "id": "p1-cell-biology-map",
+          "packId": "aqa-biology-higher",
+          "name": "Cell biology map (what to revise)",
+          "title": "Cell biology map (what to revise)",
+          "description": "This skill is the “navigation” skill for Paper 1 Cell biology.",
+          "quadrant": "Paper 1",
+          "ring": "Recall",
+          "categoryId": "paper-1",
+          "levelId": "recall",
+          "order": 1,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.paper1-cell-biology-overview"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/p1-cell-biology-map.mdx"
+        },
+        {
+          "id": "p1-infection-response-map",
+          "packId": "aqa-biology-higher",
+          "name": "Infection & response map (what to revise)",
+          "title": "Infection & response map (what to revise)",
+          "quadrant": "Paper 1",
+          "ring": "Recall",
+          "categoryId": "paper-1",
+          "levelId": "recall",
+          "order": 3,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.paper1-infection-response-overview"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/p1-infection-response-map.mdx"
+        },
+        {
+          "id": "p1-organisation-map",
+          "packId": "aqa-biology-higher",
+          "name": "Organisation map (what to revise)",
+          "title": "Organisation map (what to revise)",
+          "description": "Use this to plan your revision and spot gaps quickly.",
+          "quadrant": "Paper 1",
+          "ring": "Recall",
+          "categoryId": "paper-1",
+          "levelId": "recall",
+          "order": 2,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.paper1-organisation-overview"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/p1-organisation-map.mdx"
+        },
+        {
+          "id": "p1-required-practicals",
+          "packId": "aqa-biology-higher",
+          "name": "Required practicals (Paper 1)",
+          "title": "Required practicals (Paper 1)",
+          "quadrant": "Paper 1",
+          "ring": "Exam",
+          "categoryId": "paper-1",
+          "levelId": "exam",
+          "order": 99,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.paper1-required-practicals-overview"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/p1-required-practicals.mdx"
+        },
+        {
+          "id": "p2-ecology-map",
+          "packId": "aqa-biology-higher",
+          "name": "Ecology map (what to revise)",
+          "title": "Ecology map (what to revise)",
+          "quadrant": "Paper 2",
+          "ring": "Recall",
+          "categoryId": "paper-2",
+          "levelId": "recall",
+          "order": 3,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.paper2-ecology-overview"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/p2-ecology-map.mdx"
+        },
+        {
+          "id": "p2-inheritance-map",
+          "packId": "aqa-biology-higher",
+          "name": "Inheritance & evolution map (what to revise)",
+          "title": "Inheritance & evolution map (what to revise)",
+          "quadrant": "Paper 2",
+          "ring": "Recall",
+          "categoryId": "paper-2",
+          "levelId": "recall",
+          "order": 2,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.paper2-inheritance-overview"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/p2-inheritance-map.mdx"
+        },
+        {
+          "id": "p2-required-practicals",
+          "packId": "aqa-biology-higher",
+          "name": "Required practicals (Paper 2)",
+          "title": "Required practicals (Paper 2)",
+          "quadrant": "Paper 2",
+          "ring": "Exam",
+          "categoryId": "paper-2",
+          "levelId": "exam",
+          "order": 99,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.paper2-required-practicals-overview"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/p2-required-practicals.mdx"
         }
       ],
       "skillsById": {
@@ -134,6 +328,200 @@
             "higher"
           ],
           "sourcePath": "content/packs/aqa-biology-higher/skills/homeostasis-basics.mdx"
+        },
+        "p1-bioenergetics-map": {
+          "id": "p1-bioenergetics-map",
+          "packId": "aqa-biology-higher",
+          "name": "Bioenergetics map (what to revise)",
+          "title": "Bioenergetics map (what to revise)",
+          "quadrant": "Paper 1",
+          "ring": "Recall",
+          "categoryId": "paper-1",
+          "levelId": "recall",
+          "order": 4,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.paper1-bioenergetics-overview"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/p1-bioenergetics-map.mdx"
+        },
+        "p1-cell-biology-map": {
+          "id": "p1-cell-biology-map",
+          "packId": "aqa-biology-higher",
+          "name": "Cell biology map (what to revise)",
+          "title": "Cell biology map (what to revise)",
+          "description": "This skill is the “navigation” skill for Paper 1 Cell biology.",
+          "quadrant": "Paper 1",
+          "ring": "Recall",
+          "categoryId": "paper-1",
+          "levelId": "recall",
+          "order": 1,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.paper1-cell-biology-overview"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/p1-cell-biology-map.mdx"
+        },
+        "p1-infection-response-map": {
+          "id": "p1-infection-response-map",
+          "packId": "aqa-biology-higher",
+          "name": "Infection & response map (what to revise)",
+          "title": "Infection & response map (what to revise)",
+          "quadrant": "Paper 1",
+          "ring": "Recall",
+          "categoryId": "paper-1",
+          "levelId": "recall",
+          "order": 3,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.paper1-infection-response-overview"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/p1-infection-response-map.mdx"
+        },
+        "p1-organisation-map": {
+          "id": "p1-organisation-map",
+          "packId": "aqa-biology-higher",
+          "name": "Organisation map (what to revise)",
+          "title": "Organisation map (what to revise)",
+          "description": "Use this to plan your revision and spot gaps quickly.",
+          "quadrant": "Paper 1",
+          "ring": "Recall",
+          "categoryId": "paper-1",
+          "levelId": "recall",
+          "order": 2,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.paper1-organisation-overview"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/p1-organisation-map.mdx"
+        },
+        "p1-required-practicals": {
+          "id": "p1-required-practicals",
+          "packId": "aqa-biology-higher",
+          "name": "Required practicals (Paper 1)",
+          "title": "Required practicals (Paper 1)",
+          "quadrant": "Paper 1",
+          "ring": "Exam",
+          "categoryId": "paper-1",
+          "levelId": "exam",
+          "order": 99,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.paper1-required-practicals-overview"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/p1-required-practicals.mdx"
+        },
+        "p2-ecology-map": {
+          "id": "p2-ecology-map",
+          "packId": "aqa-biology-higher",
+          "name": "Ecology map (what to revise)",
+          "title": "Ecology map (what to revise)",
+          "quadrant": "Paper 2",
+          "ring": "Recall",
+          "categoryId": "paper-2",
+          "levelId": "recall",
+          "order": 3,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.paper2-ecology-overview"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/p2-ecology-map.mdx"
+        },
+        "p2-inheritance-map": {
+          "id": "p2-inheritance-map",
+          "packId": "aqa-biology-higher",
+          "name": "Inheritance & evolution map (what to revise)",
+          "title": "Inheritance & evolution map (what to revise)",
+          "quadrant": "Paper 2",
+          "ring": "Recall",
+          "categoryId": "paper-2",
+          "levelId": "recall",
+          "order": 2,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.paper2-inheritance-overview"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/p2-inheritance-map.mdx"
+        },
+        "p2-required-practicals": {
+          "id": "p2-required-practicals",
+          "packId": "aqa-biology-higher",
+          "name": "Required practicals (Paper 2)",
+          "title": "Required practicals (Paper 2)",
+          "quadrant": "Paper 2",
+          "ring": "Exam",
+          "categoryId": "paper-2",
+          "levelId": "exam",
+          "order": 99,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.paper2-required-practicals-overview"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/p2-required-practicals.mdx"
         }
       },
       "units": [
@@ -152,6 +540,128 @@
             "You can identify receptors, coordination centres, and effectors in examples."
           ],
           "sourcePath": "content/packs/aqa-biology-higher/units/unit.homeostasis-intro.mdx"
+        },
+        {
+          "id": "unit.paper1-bioenergetics-overview",
+          "packId": "aqa-biology-higher",
+          "title": "Paper 1 — Bioenergetics (overview)",
+          "summary": "Big-picture map of photosynthesis and respiration, including required practical concepts.",
+          "teaches": [
+            "p1-bioenergetics-map"
+          ],
+          "estimatedMinutes": 20,
+          "difficulty": "recall",
+          "doneWhen": [
+            "You can outline photosynthesis + respiration and what affects their rates."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.paper1-bioenergetics-overview.mdx"
+        },
+        {
+          "id": "unit.paper1-cell-biology-overview",
+          "packId": "aqa-biology-higher",
+          "title": "Paper 1 — Cell biology (overview)",
+          "summary": "Big-picture map of the Cell biology section and how exam questions usually test it.",
+          "teaches": [
+            "p1-cell-biology-map"
+          ],
+          "estimatedMinutes": 20,
+          "difficulty": "recall",
+          "doneWhen": [
+            "You can name the main sub-topics in Cell biology and what they mean."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.paper1-cell-biology-overview.mdx"
+        },
+        {
+          "id": "unit.paper1-infection-response-overview",
+          "packId": "aqa-biology-higher",
+          "title": "Paper 1 — Infection and response (overview)",
+          "summary": "Big-picture map of pathogens, transmission, immune response, and drug resistance.",
+          "teaches": [
+            "p1-infection-response-map"
+          ],
+          "estimatedMinutes": 20,
+          "difficulty": "recall",
+          "doneWhen": [
+            "You can name the main sub-topics in Infection and response and what they mean."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.paper1-infection-response-overview.mdx"
+        },
+        {
+          "id": "unit.paper1-organisation-overview",
+          "packId": "aqa-biology-higher",
+          "title": "Paper 1 — Organisation (overview)",
+          "summary": "Big-picture map of Organisation: digestive system, circulatory system, gas exchange, plants.",
+          "teaches": [
+            "p1-organisation-map"
+          ],
+          "estimatedMinutes": 20,
+          "difficulty": "recall",
+          "doneWhen": [
+            "You can name the main sub-topics in Organisation and what they cover."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.paper1-organisation-overview.mdx"
+        },
+        {
+          "id": "unit.paper1-required-practicals-overview",
+          "packId": "aqa-biology-higher",
+          "title": "Paper 1 — Required practicals (overview)",
+          "summary": "How required practical questions are asked, and the checklist for full marks.",
+          "teaches": [
+            "p1-required-practicals"
+          ],
+          "estimatedMinutes": 25,
+          "difficulty": "exam",
+          "doneWhen": [
+            "You can write a method with variables + controls.",
+            "You can evaluate practical methods (validity, reliability, accuracy, precision)."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.paper1-required-practicals-overview.mdx"
+        },
+        {
+          "id": "unit.paper2-ecology-overview",
+          "packId": "aqa-biology-higher",
+          "title": "Paper 2 — Ecology (overview)",
+          "summary": "Big-picture map of ecosystems, cycles, biodiversity, and human impacts.",
+          "teaches": [
+            "p2-ecology-map"
+          ],
+          "estimatedMinutes": 20,
+          "difficulty": "recall",
+          "doneWhen": [
+            "You can outline food chains/webs, cycles, and how humans affect ecosystems."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.paper2-ecology-overview.mdx"
+        },
+        {
+          "id": "unit.paper2-inheritance-overview",
+          "packId": "aqa-biology-higher",
+          "title": "Paper 2 — Inheritance, variation and evolution (overview)",
+          "summary": "Big-picture map of DNA/genes, inheritance, variation, evolution, and genetic engineering.",
+          "teaches": [
+            "p2-inheritance-map"
+          ],
+          "estimatedMinutes": 20,
+          "difficulty": "recall",
+          "doneWhen": [
+            "You can outline the main inheritance/evolution topics and the key vocabulary."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.paper2-inheritance-overview.mdx"
+        },
+        {
+          "id": "unit.paper2-required-practicals-overview",
+          "packId": "aqa-biology-higher",
+          "title": "Paper 2 — Required practicals (overview)",
+          "summary": "Sampling and ecology practical skills: quadrats, transects, risk, and evaluation.",
+          "teaches": [
+            "p2-required-practicals"
+          ],
+          "estimatedMinutes": 25,
+          "difficulty": "exam",
+          "doneWhen": [
+            "You can choose a sampling method and justify it.",
+            "You can evaluate sampling reliability and bias."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.paper2-required-practicals-overview.mdx"
         },
         {
           "id": "unit.transport-in-cells",
@@ -187,6 +697,128 @@
             "You can identify receptors, coordination centres, and effectors in examples."
           ],
           "sourcePath": "content/packs/aqa-biology-higher/units/unit.homeostasis-intro.mdx"
+        },
+        "unit.paper1-bioenergetics-overview": {
+          "id": "unit.paper1-bioenergetics-overview",
+          "packId": "aqa-biology-higher",
+          "title": "Paper 1 — Bioenergetics (overview)",
+          "summary": "Big-picture map of photosynthesis and respiration, including required practical concepts.",
+          "teaches": [
+            "p1-bioenergetics-map"
+          ],
+          "estimatedMinutes": 20,
+          "difficulty": "recall",
+          "doneWhen": [
+            "You can outline photosynthesis + respiration and what affects their rates."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.paper1-bioenergetics-overview.mdx"
+        },
+        "unit.paper1-cell-biology-overview": {
+          "id": "unit.paper1-cell-biology-overview",
+          "packId": "aqa-biology-higher",
+          "title": "Paper 1 — Cell biology (overview)",
+          "summary": "Big-picture map of the Cell biology section and how exam questions usually test it.",
+          "teaches": [
+            "p1-cell-biology-map"
+          ],
+          "estimatedMinutes": 20,
+          "difficulty": "recall",
+          "doneWhen": [
+            "You can name the main sub-topics in Cell biology and what they mean."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.paper1-cell-biology-overview.mdx"
+        },
+        "unit.paper1-infection-response-overview": {
+          "id": "unit.paper1-infection-response-overview",
+          "packId": "aqa-biology-higher",
+          "title": "Paper 1 — Infection and response (overview)",
+          "summary": "Big-picture map of pathogens, transmission, immune response, and drug resistance.",
+          "teaches": [
+            "p1-infection-response-map"
+          ],
+          "estimatedMinutes": 20,
+          "difficulty": "recall",
+          "doneWhen": [
+            "You can name the main sub-topics in Infection and response and what they mean."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.paper1-infection-response-overview.mdx"
+        },
+        "unit.paper1-organisation-overview": {
+          "id": "unit.paper1-organisation-overview",
+          "packId": "aqa-biology-higher",
+          "title": "Paper 1 — Organisation (overview)",
+          "summary": "Big-picture map of Organisation: digestive system, circulatory system, gas exchange, plants.",
+          "teaches": [
+            "p1-organisation-map"
+          ],
+          "estimatedMinutes": 20,
+          "difficulty": "recall",
+          "doneWhen": [
+            "You can name the main sub-topics in Organisation and what they cover."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.paper1-organisation-overview.mdx"
+        },
+        "unit.paper1-required-practicals-overview": {
+          "id": "unit.paper1-required-practicals-overview",
+          "packId": "aqa-biology-higher",
+          "title": "Paper 1 — Required practicals (overview)",
+          "summary": "How required practical questions are asked, and the checklist for full marks.",
+          "teaches": [
+            "p1-required-practicals"
+          ],
+          "estimatedMinutes": 25,
+          "difficulty": "exam",
+          "doneWhen": [
+            "You can write a method with variables + controls.",
+            "You can evaluate practical methods (validity, reliability, accuracy, precision)."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.paper1-required-practicals-overview.mdx"
+        },
+        "unit.paper2-ecology-overview": {
+          "id": "unit.paper2-ecology-overview",
+          "packId": "aqa-biology-higher",
+          "title": "Paper 2 — Ecology (overview)",
+          "summary": "Big-picture map of ecosystems, cycles, biodiversity, and human impacts.",
+          "teaches": [
+            "p2-ecology-map"
+          ],
+          "estimatedMinutes": 20,
+          "difficulty": "recall",
+          "doneWhen": [
+            "You can outline food chains/webs, cycles, and how humans affect ecosystems."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.paper2-ecology-overview.mdx"
+        },
+        "unit.paper2-inheritance-overview": {
+          "id": "unit.paper2-inheritance-overview",
+          "packId": "aqa-biology-higher",
+          "title": "Paper 2 — Inheritance, variation and evolution (overview)",
+          "summary": "Big-picture map of DNA/genes, inheritance, variation, evolution, and genetic engineering.",
+          "teaches": [
+            "p2-inheritance-map"
+          ],
+          "estimatedMinutes": 20,
+          "difficulty": "recall",
+          "doneWhen": [
+            "You can outline the main inheritance/evolution topics and the key vocabulary."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.paper2-inheritance-overview.mdx"
+        },
+        "unit.paper2-required-practicals-overview": {
+          "id": "unit.paper2-required-practicals-overview",
+          "packId": "aqa-biology-higher",
+          "title": "Paper 2 — Required practicals (overview)",
+          "summary": "Sampling and ecology practical skills: quadrats, transects, risk, and evaluation.",
+          "teaches": [
+            "p2-required-practicals"
+          ],
+          "estimatedMinutes": 25,
+          "difficulty": "exam",
+          "doneWhen": [
+            "You can choose a sampling method and justify it.",
+            "You can evaluate sampling reliability and bias."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.paper2-required-practicals-overview.mdx"
         },
         "unit.transport-in-cells": {
           "id": "unit.transport-in-cells",
