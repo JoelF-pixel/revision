@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-09T23:44:21.641Z",
+  "generatedAt": "2026-02-09T23:49:36.878Z",
   "defaultPackId": "govuk-prototyping",
   "packs": {
     "aqa-biology-higher": {
@@ -9,24 +9,12 @@
         "description": "GCSE Biology (AQA Separate/Triple) Higher revision pack: skills, lessons, self-assessment, and practice questions aligned to the specification.",
         "categories": [
           {
-            "id": "cell-biology",
-            "title": "Cell biology"
+            "id": "paper-1",
+            "title": "Paper 1"
           },
           {
-            "id": "organisation",
-            "title": "Organisation"
-          },
-          {
-            "id": "infection-and-response",
-            "title": "Infection and response"
-          },
-          {
-            "id": "bioenergetics",
-            "title": "Bioenergetics"
-          },
-          {
-            "id": "required-practicals",
-            "title": "Required practicals"
+            "id": "paper-2",
+            "title": "Paper 2"
           }
         ],
         "levels": [
@@ -51,9 +39,9 @@
           "name": "Transport in cells (diffusion, osmosis, active transport)",
           "title": "Transport in cells (diffusion, osmosis, active transport)",
           "description": "1) Which processes need a membrane? 2) Which process needs energy? 3) What happens to an animal cell in a very dilute solution?",
-          "quadrant": "Cell biology",
+          "quadrant": "Paper 1",
           "ring": "Apply",
-          "categoryId": "cell-biology",
+          "categoryId": "paper-1",
           "levelId": "apply",
           "order": 1,
           "status": "No Change",
@@ -69,6 +57,31 @@
             "higher"
           ],
           "sourcePath": "content/packs/aqa-biology-higher/skills/diffusion-osmosis-active-transport.mdx"
+        },
+        {
+          "id": "homeostasis-basics",
+          "packId": "aqa-biology-higher",
+          "name": "Homeostasis basics (internal conditions)",
+          "title": "Homeostasis basics (internal conditions)",
+          "description": "Explain (in one sentence each): receptor, coordination centre, effector.",
+          "quadrant": "Paper 2",
+          "ring": "Recall",
+          "categoryId": "paper-2",
+          "levelId": "recall",
+          "order": 1,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.homeostasis-intro"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/homeostasis-basics.mdx"
         }
       ],
       "skillsById": {
@@ -78,9 +91,9 @@
           "name": "Transport in cells (diffusion, osmosis, active transport)",
           "title": "Transport in cells (diffusion, osmosis, active transport)",
           "description": "1) Which processes need a membrane? 2) Which process needs energy? 3) What happens to an animal cell in a very dilute solution?",
-          "quadrant": "Cell biology",
+          "quadrant": "Paper 1",
           "ring": "Apply",
-          "categoryId": "cell-biology",
+          "categoryId": "paper-1",
           "levelId": "apply",
           "order": 1,
           "status": "No Change",
@@ -96,9 +109,50 @@
             "higher"
           ],
           "sourcePath": "content/packs/aqa-biology-higher/skills/diffusion-osmosis-active-transport.mdx"
+        },
+        "homeostasis-basics": {
+          "id": "homeostasis-basics",
+          "packId": "aqa-biology-higher",
+          "name": "Homeostasis basics (internal conditions)",
+          "title": "Homeostasis basics (internal conditions)",
+          "description": "Explain (in one sentence each): receptor, coordination centre, effector.",
+          "quadrant": "Paper 2",
+          "ring": "Recall",
+          "categoryId": "paper-2",
+          "levelId": "recall",
+          "order": 1,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.homeostasis-intro"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/homeostasis-basics.mdx"
         }
       },
       "units": [
+        {
+          "id": "unit.homeostasis-intro",
+          "packId": "aqa-biology-higher",
+          "title": "Homeostasis (intro)",
+          "summary": "Understand what homeostasis is, and the receptor → coordination centre → effector model.",
+          "teaches": [
+            "homeostasis-basics"
+          ],
+          "estimatedMinutes": 25,
+          "difficulty": "recall",
+          "doneWhen": [
+            "You can define homeostasis.",
+            "You can identify receptors, coordination centres, and effectors in examples."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.homeostasis-intro.mdx"
+        },
         {
           "id": "unit.transport-in-cells",
           "packId": "aqa-biology-higher",
@@ -118,6 +172,22 @@
         }
       ],
       "unitsById": {
+        "unit.homeostasis-intro": {
+          "id": "unit.homeostasis-intro",
+          "packId": "aqa-biology-higher",
+          "title": "Homeostasis (intro)",
+          "summary": "Understand what homeostasis is, and the receptor → coordination centre → effector model.",
+          "teaches": [
+            "homeostasis-basics"
+          ],
+          "estimatedMinutes": 25,
+          "difficulty": "recall",
+          "doneWhen": [
+            "You can define homeostasis.",
+            "You can identify receptors, coordination centres, and effectors in examples."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.homeostasis-intro.mdx"
+        },
         "unit.transport-in-cells": {
           "id": "unit.transport-in-cells",
           "packId": "aqa-biology-higher",
