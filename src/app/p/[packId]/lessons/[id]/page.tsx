@@ -109,6 +109,18 @@ export default async function PackLessonPage(props: {
           <aside className="space-y-4">
             <UnitProgressControl packId={packId} unitId={id} />
 
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Baseline quiz</CardTitle>
+                <CardDescription>Quick check to set starting ratings for this lesson.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button className="w-full" asChild>
+                  <Link href={`/p/${packId}/lessons/${id}/baseline`}>Start baseline quiz</Link>
+                </Button>
+              </CardContent>
+            </Card>
+
             {(estimatedMinutes || difficulty) ? (
               <Card>
                 <CardHeader>
