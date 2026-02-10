@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-10T00:14:49.939Z",
+  "generatedAt": "2026-02-10T00:16:14.984Z",
   "defaultPackId": "govuk-prototyping",
   "packs": {
     "aqa-biology-higher": {
@@ -33,6 +33,30 @@
         ]
       },
       "skills": [
+        {
+          "id": "cell-differentiation-and-specialised-cells",
+          "packId": "aqa-biology-higher",
+          "name": "Cell differentiation and specialised cells",
+          "title": "Cell differentiation and specialised cells",
+          "quadrant": "Paper 1",
+          "ring": "Recall",
+          "categoryId": "paper-1",
+          "levelId": "recall",
+          "order": 8,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.cell-specialisation-and-organisation"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/cell-differentiation-and-specialised-cells.mdx"
+        },
         {
           "id": "cell-structure-prokaryote-eukaryote",
           "packId": "aqa-biology-higher",
@@ -154,6 +178,30 @@
             "higher"
           ],
           "sourcePath": "content/packs/aqa-biology-higher/skills/organelles-and-functions.mdx"
+        },
+        {
+          "id": "organisation-cells-tissues-organs-systems",
+          "packId": "aqa-biology-higher",
+          "name": "Organisation levels (cells → tissues → organs → organ systems)",
+          "title": "Organisation levels (cells → tissues → organs → organ systems)",
+          "quadrant": "Paper 1",
+          "ring": "Recall",
+          "categoryId": "paper-1",
+          "levelId": "recall",
+          "order": 9,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.cell-specialisation-and-organisation"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/organisation-cells-tissues-organs-systems.mdx"
         },
         {
           "id": "osmosis-in-plant-and-animal-cells",
@@ -398,6 +446,30 @@
           "sourcePath": "content/packs/aqa-biology-higher/skills/required-practical-osmosis.mdx"
         },
         {
+          "id": "stem-cells-basics",
+          "packId": "aqa-biology-higher",
+          "name": "Stem cells (basics + uses)",
+          "title": "Stem cells (basics + uses)",
+          "quadrant": "Paper 1",
+          "ring": "Apply",
+          "categoryId": "paper-1",
+          "levelId": "apply",
+          "order": 10,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.cell-specialisation-and-organisation"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/stem-cells-basics.mdx"
+        },
+        {
           "id": "surface-area-and-diffusion",
           "packId": "aqa-biology-higher",
           "name": "Surface area and diffusion (cells + exchange surfaces)",
@@ -424,6 +496,30 @@
         }
       ],
       "skillsById": {
+        "cell-differentiation-and-specialised-cells": {
+          "id": "cell-differentiation-and-specialised-cells",
+          "packId": "aqa-biology-higher",
+          "name": "Cell differentiation and specialised cells",
+          "title": "Cell differentiation and specialised cells",
+          "quadrant": "Paper 1",
+          "ring": "Recall",
+          "categoryId": "paper-1",
+          "levelId": "recall",
+          "order": 8,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.cell-specialisation-and-organisation"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/cell-differentiation-and-specialised-cells.mdx"
+        },
         "cell-structure-prokaryote-eukaryote": {
           "id": "cell-structure-prokaryote-eukaryote",
           "packId": "aqa-biology-higher",
@@ -545,6 +641,30 @@
             "higher"
           ],
           "sourcePath": "content/packs/aqa-biology-higher/skills/organelles-and-functions.mdx"
+        },
+        "organisation-cells-tissues-organs-systems": {
+          "id": "organisation-cells-tissues-organs-systems",
+          "packId": "aqa-biology-higher",
+          "name": "Organisation levels (cells → tissues → organs → organ systems)",
+          "title": "Organisation levels (cells → tissues → organs → organ systems)",
+          "quadrant": "Paper 1",
+          "ring": "Recall",
+          "categoryId": "paper-1",
+          "levelId": "recall",
+          "order": 9,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.cell-specialisation-and-organisation"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/organisation-cells-tissues-organs-systems.mdx"
         },
         "osmosis-in-plant-and-animal-cells": {
           "id": "osmosis-in-plant-and-animal-cells",
@@ -788,6 +908,30 @@
           ],
           "sourcePath": "content/packs/aqa-biology-higher/skills/required-practical-osmosis.mdx"
         },
+        "stem-cells-basics": {
+          "id": "stem-cells-basics",
+          "packId": "aqa-biology-higher",
+          "name": "Stem cells (basics + uses)",
+          "title": "Stem cells (basics + uses)",
+          "quadrant": "Paper 1",
+          "ring": "Apply",
+          "categoryId": "paper-1",
+          "levelId": "apply",
+          "order": 10,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.cell-specialisation-and-organisation"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/stem-cells-basics.mdx"
+        },
         "surface-area-and-diffusion": {
           "id": "surface-area-and-diffusion",
           "packId": "aqa-biology-higher",
@@ -815,6 +959,25 @@
         }
       },
       "units": [
+        {
+          "id": "unit.cell-specialisation-and-organisation",
+          "packId": "aqa-biology-higher",
+          "title": "Cell specialisation and organisation (cells → tissues → organs)",
+          "summary": "Understand cell differentiation, learn key specialised cells, and use the organisation hierarchy confidently.",
+          "teaches": [
+            "cell-differentiation-and-specialised-cells",
+            "organisation-cells-tissues-organs-systems",
+            "stem-cells-basics"
+          ],
+          "estimatedMinutes": 35,
+          "difficulty": "apply",
+          "doneWhen": [
+            "You can define cell differentiation and give examples.",
+            "You can explain adaptations of specialised cells.",
+            "You can use cells → tissues → organs → organ systems with examples."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.cell-specialisation-and-organisation.mdx"
+        },
         {
           "id": "unit.cell-structure-and-microscopy",
           "packId": "aqa-biology-higher",
@@ -994,6 +1157,25 @@
         }
       ],
       "unitsById": {
+        "unit.cell-specialisation-and-organisation": {
+          "id": "unit.cell-specialisation-and-organisation",
+          "packId": "aqa-biology-higher",
+          "title": "Cell specialisation and organisation (cells → tissues → organs)",
+          "summary": "Understand cell differentiation, learn key specialised cells, and use the organisation hierarchy confidently.",
+          "teaches": [
+            "cell-differentiation-and-specialised-cells",
+            "organisation-cells-tissues-organs-systems",
+            "stem-cells-basics"
+          ],
+          "estimatedMinutes": 35,
+          "difficulty": "apply",
+          "doneWhen": [
+            "You can define cell differentiation and give examples.",
+            "You can explain adaptations of specialised cells.",
+            "You can use cells → tissues → organs → organ systems with examples."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.cell-specialisation-and-organisation.mdx"
+        },
         "unit.cell-structure-and-microscopy": {
           "id": "unit.cell-structure-and-microscopy",
           "packId": "aqa-biology-higher",
