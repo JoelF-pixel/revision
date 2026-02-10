@@ -112,6 +112,31 @@ export function TransportInCellsBaselineQuiz({
         answerId: "B",
         skillId: "surface-area-and-diffusion",
       },
+      {
+        id: "mcq-6",
+        stem: "In the potato osmosis practical, what is usually the independent variable?",
+        choices: [
+          { id: "A", text: "Mass of the potato cylinder" },
+          { id: "B", text: "Concentration of the sugar/salt solution" },
+          { id: "C", text: "Temperature of the room" },
+          { id: "D", text: "Time of day" },
+        ],
+        answerId: "B",
+        skillId: "required-practical-osmosis",
+        explain: "You change the solution concentration and measure change in mass (or % change).",
+      },
+      {
+        id: "mcq-7",
+        stem: "Why should you blot the potato cylinders dry before weighing?",
+        choices: [
+          { id: "A", text: "To increase diffusion" },
+          { id: "B", text: "To remove excess solution that would affect the mass" },
+          { id: "C", text: "To cool the potato" },
+          { id: "D", text: "To stop active transport" },
+        ],
+        answerId: "B",
+        skillId: "required-practical-osmosis",
+      },
     ],
     [],
   );
@@ -148,6 +173,26 @@ export function TransportInCellsBaselineQuiz({
           "This requires energy (from respiration)",
         ],
         skillId: "diffusion-osmosis-active-transport",
+      },
+      {
+        id: "sa-4",
+        stem: "In the potato osmosis practical, state one control variable and how you would control it.",
+        marks: 2,
+        markScheme: [
+          "Any valid control variable (e.g. time in solution / size of cylinders / temperature)",
+          "How it is kept the same (e.g. same time for all, same length/diameter, use water bath)",
+        ],
+        skillId: "required-practical-osmosis",
+      },
+      {
+        id: "sa-5",
+        stem: "Describe how you would calculate percentage change in mass.",
+        marks: 2,
+        markScheme: [
+          "(final mass - initial mass) / initial mass × 100",
+          "Can be negative if mass decreases",
+        ],
+        skillId: "required-practical-osmosis",
       },
     ],
     [],
