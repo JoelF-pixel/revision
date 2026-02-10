@@ -13,6 +13,8 @@ type Mcq = {
   choices: { id: string; text: string }[];
   answerId: string;
   explain?: string;
+  skillId: string;
+  points?: number; // default 1
 };
 
 type Short = {
@@ -20,6 +22,14 @@ type Short = {
   stem: string;
   marks: number;
   markScheme: string[];
+  skillId: string;
+};
+
+type SkillScore = {
+  ok: number;
+  total: number;
+  pct: number;
+  rating: 0 | 1 | 2 | 3;
 };
 
 function ratingFromPercent(pct: number): 0 | 1 | 2 | 3 {
@@ -51,6 +61,7 @@ export function TransportInCellsBaselineQuiz({
         ],
         answerId: "B",
         explain: "Osmosis is the diffusion of water through a partially permeable membrane.",
+        skillId: "diffusion-osmosis-active-transport",
       },
       {
         id: "mcq-2",
@@ -63,6 +74,7 @@ export function TransportInCellsBaselineQuiz({
         ],
         answerId: "C",
         explain: "Active transport uses energy from respiration to move substances against a gradient.",
+        skillId: "diffusion-osmosis-active-transport",
       },
       {
         id: "mcq-3",
@@ -74,6 +86,7 @@ export function TransportInCellsBaselineQuiz({
           { id: "D", text: "outside → inside only" },
         ],
         answerId: "B",
+        skillId: "diffusion-osmosis-active-transport",
       },
       {
         id: "mcq-4",
@@ -85,6 +98,7 @@ export function TransportInCellsBaselineQuiz({
           { id: "D", text: "Nothing changes" },
         ],
         answerId: "B",
+        skillId: "osmosis-in-plant-and-animal-cells",
       },
       {
         id: "mcq-5",
@@ -96,6 +110,7 @@ export function TransportInCellsBaselineQuiz({
           { id: "D", text: "They prevent diffusion" },
         ],
         answerId: "B",
+        skillId: "surface-area-and-diffusion",
       },
     ],
     [],
@@ -111,6 +126,7 @@ export function TransportInCellsBaselineQuiz({
           "Net movement of particles",
           "From a region of higher concentration to lower concentration",
         ],
+        skillId: "diffusion-osmosis-active-transport",
       },
       {
         id: "sa-2",
@@ -120,6 +136,7 @@ export function TransportInCellsBaselineQuiz({
           "Movement of water",
           "Through a partially permeable membrane from dilute to more concentrated",
         ],
+        skillId: "diffusion-osmosis-active-transport",
       },
       {
         id: "sa-3",
@@ -130,10 +147,23 @@ export function TransportInCellsBaselineQuiz({
           "So glucose must move against the concentration gradient",
           "This requires energy (from respiration)",
         ],
+        skillId: "diffusion-osmosis-active-transport",
       },
     ],
     [],
   );
+
+  const assessedSkillIds = useMemo(() => {
+    // Only include skills that:
+    // 1) the unit teaches
+    // 2) have at least one question mapped
+    const taught = new Set(teaches.map(String));
+    const mapped = new Set<string>();
+    for (const q of mcqs) mapped.add(q.skillId);
+    for (const q of shorts) mapped.add(q.skillId);
+
+    return Array.from(mapped).filter((sid) => taught.has(sid));
+  }, [teaches, mcqs, shorts]);
 
   const [mcqAnswers, setMcqAnswers] = useState<Record<string, string>>({});
   const [shortAnswers, setShortAnswers] = useState<Record<string, string>>({});
@@ -144,29 +174,44 @@ export function TransportInCellsBaselineQuiz({
   const [error, setError] = useState<string | null>(null);
   const [saveOk, setSaveOk] = useState(false);
 
-  const mcqScore = useMemo(() => {
-    let ok = 0;
-    for (const q of mcqs) {
-      if (mcqAnswers[q.id] && mcqAnswers[q.id] === q.answerId) ok += 1;
-    }
-    return { ok, total: mcqs.length };
-  }, [mcqs, mcqAnswers]);
+  const scoreBySkill: Record<string, SkillScore> = useMemo(() => {
+    const totals: Record<string, { ok: number; total: number }> = {};
 
-  const shortScore = useMemo(() => {
-    const total = shorts.reduce((a, s) => a + s.marks, 0);
-    const ok = shorts.reduce(
-      (a, s) => a + Math.max(0, Math.min(s.marks, selfMarks[s.id] ?? 0)),
-      0,
-    );
-    return { ok, total };
-  }, [shorts, selfMarks]);
+    function add(skillId: string, ok: number, total: number) {
+      if (!totals[skillId]) totals[skillId] = { ok: 0, total: 0 };
+      totals[skillId].ok += ok;
+      totals[skillId].total += total;
+    }
+
+    // MCQs (1 point each by default)
+    for (const q of mcqs) {
+      const pts = typeof q.points === "number" ? q.points : 1;
+      const ok = mcqAnswers[q.id] && mcqAnswers[q.id] === q.answerId ? pts : 0;
+      add(q.skillId, ok, pts);
+    }
+
+    // Short answers (self-marked)
+    for (const q of shorts) {
+      const ok = Math.max(0, Math.min(q.marks, selfMarks[q.id] ?? 0));
+      add(q.skillId, ok, q.marks);
+    }
+
+    const out: Record<string, SkillScore> = {};
+    for (const [sid, v] of Object.entries(totals)) {
+      const pct = v.total ? v.ok / v.total : 0;
+      out[sid] = { ok: v.ok, total: v.total, pct, rating: ratingFromPercent(pct) };
+    }
+
+    return out;
+  }, [mcqs, shorts, mcqAnswers, selfMarks]);
 
   const overall = useMemo(() => {
-    const total = mcqScore.total + shortScore.total;
-    const ok = mcqScore.ok + shortScore.ok;
+    const all = Object.values(scoreBySkill);
+    const total = all.reduce((a, s) => a + s.total, 0);
+    const ok = all.reduce((a, s) => a + s.ok, 0);
     const pct = total ? ok / total : 0;
     return { ok, total, pct, rating: ratingFromPercent(pct) };
-  }, [mcqScore, shortScore]);
+  }, [scoreBySkill]);
 
   async function saveDerivedRatings() {
     setSaving(true);
@@ -174,7 +219,7 @@ export function TransportInCellsBaselineQuiz({
     setSaveOk(false);
 
     try {
-      // 1) Set unit progress to IN_PROGRESS (baseline started).
+      // Mark unit as started.
       const p1 = await fetch("/api/unit-progress", {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -182,13 +227,17 @@ export function TransportInCellsBaselineQuiz({
       });
       if (!p1.ok) throw new Error("unit-progress");
 
-      // 2) Apply derived rating to all skills taught by the unit.
-      for (const skillId of teaches) {
+      // Save per-skill ratings (only for skills we actually assessed).
+      for (const skillId of assessedSkillIds) {
+        const s = scoreBySkill[skillId];
+        const rating = (s?.rating ?? overall.rating) as 0 | 1 | 2 | 3;
+
         const res = await fetch("/api/ratings", {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ packId, skillId, rating: overall.rating }),
+          body: JSON.stringify({ packId, skillId, rating }),
         });
+
         if (!res.ok) throw new Error("ratings");
       }
 
@@ -200,12 +249,18 @@ export function TransportInCellsBaselineQuiz({
     }
   }
 
+  const unassessedTaughtSkills = useMemo(() => {
+    const taught = new Set(teaches.map(String));
+    const assessed = new Set(assessedSkillIds);
+    return Array.from(taught).filter((sid) => !assessed.has(sid));
+  }, [teaches, assessedSkillIds]);
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Transport in cells — baseline</CardTitle>
         <CardDescription>
-          5 MCQs + 3 short answers. After marking, save to set your starting skill ratings.
+          5 MCQs + 3 short answers. After self-marking, we save **separate ratings per skill**.
         </CardDescription>
       </CardHeader>
 
@@ -307,14 +362,45 @@ export function TransportInCellsBaselineQuiz({
           </div>
         </section>
 
-        <div className="rounded-lg border p-4 space-y-2">
+        <div className="rounded-lg border p-4 space-y-3">
           <div className="font-medium">Score</div>
           <div className="text-sm text-muted-foreground">
-            MCQ: {mcqScore.ok}/{mcqScore.total} · Short answer: {shortScore.ok}/{shortScore.total} · Overall: {overall.ok}/{overall.total} ({Math.round(overall.pct * 100)}%)
+            Overall: {overall.ok}/{overall.total} ({Math.round(overall.pct * 100)}%)
           </div>
-          <div className="text-sm">
-            Derived skill rating: <span className="font-semibold">{overall.rating}</span> (applied to the skills this lesson teaches)
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left text-muted-foreground">
+                  <th className="py-1 pr-3">Skill</th>
+                  <th className="py-1 pr-3">Score</th>
+                  <th className="py-1 pr-3">%</th>
+                  <th className="py-1">Rating</th>
+                </tr>
+              </thead>
+              <tbody>
+                {assessedSkillIds.map((sid) => {
+                  const s = scoreBySkill[sid];
+                  if (!s) return null;
+                  return (
+                    <tr key={sid} className="border-t">
+                      <td className="py-1 pr-3 font-mono text-xs">{sid}</td>
+                      <td className="py-1 pr-3">{s.ok}/{s.total}</td>
+                      <td className="py-1 pr-3">{Math.round(s.pct * 100)}%</td>
+                      <td className="py-1 font-semibold">{s.rating}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
+
+          {unassessedTaughtSkills.length ? (
+            <div className="text-xs text-muted-foreground">
+              Note: these taught skills weren’t assessed by this baseline, so we won’t change their ratings yet:
+              <div className="mt-1 font-mono">{unassessedTaughtSkills.join(", ")}</div>
+            </div>
+          ) : null}
         </div>
 
         {!submitted ? (
