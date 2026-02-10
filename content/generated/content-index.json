@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-10T00:16:14.984Z",
+  "generatedAt": "2026-02-10T00:19:26.672Z",
   "defaultPackId": "govuk-prototyping",
   "packs": {
     "aqa-biology-higher": {
@@ -132,6 +132,30 @@
           "sourcePath": "content/packs/aqa-biology-higher/skills/homeostasis-basics.mdx"
         },
         {
+          "id": "meristem-and-plant-stem-cells",
+          "packId": "aqa-biology-higher",
+          "name": "Plant stem cells (meristems)",
+          "title": "Plant stem cells (meristems)",
+          "quadrant": "Paper 1",
+          "ring": "Recall",
+          "categoryId": "paper-1",
+          "levelId": "recall",
+          "order": 13,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.cell-division-and-stem-cells"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/meristem-and-plant-stem-cells.mdx"
+        },
+        {
           "id": "microscopy-magnification-and-scale",
           "packId": "aqa-biology-higher",
           "name": "Microscopy: magnification, image size and real size",
@@ -154,6 +178,30 @@
             "higher"
           ],
           "sourcePath": "content/packs/aqa-biology-higher/skills/microscopy-magnification-and-scale.mdx"
+        },
+        {
+          "id": "mitosis-and-cell-cycle",
+          "packId": "aqa-biology-higher",
+          "name": "Mitosis and the cell cycle",
+          "title": "Mitosis and the cell cycle",
+          "quadrant": "Paper 1",
+          "ring": "Apply",
+          "categoryId": "paper-1",
+          "levelId": "apply",
+          "order": 11,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.cell-division-and-stem-cells"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/mitosis-and-cell-cycle.mdx"
         },
         {
           "id": "organelles-and-functions",
@@ -470,6 +518,30 @@
           "sourcePath": "content/packs/aqa-biology-higher/skills/stem-cells-basics.mdx"
         },
         {
+          "id": "stem-cells-therapy-and-ethics",
+          "packId": "aqa-biology-higher",
+          "name": "Stem cells: therapy, risks and ethics",
+          "title": "Stem cells: therapy, risks and ethics",
+          "quadrant": "Paper 1",
+          "ring": "Exam",
+          "categoryId": "paper-1",
+          "levelId": "exam",
+          "order": 12,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.cell-division-and-stem-cells"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/stem-cells-therapy-and-ethics.mdx"
+        },
+        {
           "id": "surface-area-and-diffusion",
           "packId": "aqa-biology-higher",
           "name": "Surface area and diffusion (cells + exchange surfaces)",
@@ -594,6 +666,30 @@
           ],
           "sourcePath": "content/packs/aqa-biology-higher/skills/homeostasis-basics.mdx"
         },
+        "meristem-and-plant-stem-cells": {
+          "id": "meristem-and-plant-stem-cells",
+          "packId": "aqa-biology-higher",
+          "name": "Plant stem cells (meristems)",
+          "title": "Plant stem cells (meristems)",
+          "quadrant": "Paper 1",
+          "ring": "Recall",
+          "categoryId": "paper-1",
+          "levelId": "recall",
+          "order": 13,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.cell-division-and-stem-cells"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/meristem-and-plant-stem-cells.mdx"
+        },
         "microscopy-magnification-and-scale": {
           "id": "microscopy-magnification-and-scale",
           "packId": "aqa-biology-higher",
@@ -617,6 +713,30 @@
             "higher"
           ],
           "sourcePath": "content/packs/aqa-biology-higher/skills/microscopy-magnification-and-scale.mdx"
+        },
+        "mitosis-and-cell-cycle": {
+          "id": "mitosis-and-cell-cycle",
+          "packId": "aqa-biology-higher",
+          "name": "Mitosis and the cell cycle",
+          "title": "Mitosis and the cell cycle",
+          "quadrant": "Paper 1",
+          "ring": "Apply",
+          "categoryId": "paper-1",
+          "levelId": "apply",
+          "order": 11,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.cell-division-and-stem-cells"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/mitosis-and-cell-cycle.mdx"
         },
         "organelles-and-functions": {
           "id": "organelles-and-functions",
@@ -932,6 +1052,30 @@
           ],
           "sourcePath": "content/packs/aqa-biology-higher/skills/stem-cells-basics.mdx"
         },
+        "stem-cells-therapy-and-ethics": {
+          "id": "stem-cells-therapy-and-ethics",
+          "packId": "aqa-biology-higher",
+          "name": "Stem cells: therapy, risks and ethics",
+          "title": "Stem cells: therapy, risks and ethics",
+          "quadrant": "Paper 1",
+          "ring": "Exam",
+          "categoryId": "paper-1",
+          "levelId": "exam",
+          "order": 12,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.cell-division-and-stem-cells"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/stem-cells-therapy-and-ethics.mdx"
+        },
         "surface-area-and-diffusion": {
           "id": "surface-area-and-diffusion",
           "packId": "aqa-biology-higher",
@@ -959,6 +1103,25 @@
         }
       },
       "units": [
+        {
+          "id": "unit.cell-division-and-stem-cells",
+          "packId": "aqa-biology-higher",
+          "title": "Cell division (mitosis) and stem cells",
+          "summary": "Understand the cell cycle and mitosis, then evaluate stem cell therapies and ethics.",
+          "teaches": [
+            "mitosis-and-cell-cycle",
+            "stem-cells-therapy-and-ethics",
+            "meristem-and-plant-stem-cells"
+          ],
+          "estimatedMinutes": 40,
+          "difficulty": "exam",
+          "doneWhen": [
+            "You can explain the cell cycle and what mitosis produces.",
+            "You can apply mitosis to growth/repair scenarios.",
+            "You can evaluate stem cell therapy with risks and ethics (4–6 marks)."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.cell-division-and-stem-cells.mdx"
+        },
         {
           "id": "unit.cell-specialisation-and-organisation",
           "packId": "aqa-biology-higher",
@@ -1157,6 +1320,25 @@
         }
       ],
       "unitsById": {
+        "unit.cell-division-and-stem-cells": {
+          "id": "unit.cell-division-and-stem-cells",
+          "packId": "aqa-biology-higher",
+          "title": "Cell division (mitosis) and stem cells",
+          "summary": "Understand the cell cycle and mitosis, then evaluate stem cell therapies and ethics.",
+          "teaches": [
+            "mitosis-and-cell-cycle",
+            "stem-cells-therapy-and-ethics",
+            "meristem-and-plant-stem-cells"
+          ],
+          "estimatedMinutes": 40,
+          "difficulty": "exam",
+          "doneWhen": [
+            "You can explain the cell cycle and what mitosis produces.",
+            "You can apply mitosis to growth/repair scenarios.",
+            "You can evaluate stem cell therapy with risks and ethics (4–6 marks)."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.cell-division-and-stem-cells.mdx"
+        },
         "unit.cell-specialisation-and-organisation": {
           "id": "unit.cell-specialisation-and-organisation",
           "packId": "aqa-biology-higher",
