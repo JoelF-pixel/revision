@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-10T00:03:31.440Z",
+  "generatedAt": "2026-02-10T00:14:49.939Z",
   "defaultPackId": "govuk-prototyping",
   "packs": {
     "aqa-biology-higher": {
@@ -33,6 +33,30 @@
         ]
       },
       "skills": [
+        {
+          "id": "cell-structure-prokaryote-eukaryote",
+          "packId": "aqa-biology-higher",
+          "name": "Cell structure (prokaryote vs eukaryote)",
+          "title": "Cell structure (prokaryote vs eukaryote)",
+          "quadrant": "Paper 1",
+          "ring": "Recall",
+          "categoryId": "paper-1",
+          "levelId": "recall",
+          "order": 5,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.cell-structure-and-microscopy"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/cell-structure-prokaryote-eukaryote.mdx"
+        },
         {
           "id": "diffusion-osmosis-active-transport",
           "packId": "aqa-biology-higher",
@@ -82,6 +106,54 @@
             "higher"
           ],
           "sourcePath": "content/packs/aqa-biology-higher/skills/homeostasis-basics.mdx"
+        },
+        {
+          "id": "microscopy-magnification-and-scale",
+          "packId": "aqa-biology-higher",
+          "name": "Microscopy: magnification, image size and real size",
+          "title": "Microscopy: magnification, image size and real size",
+          "quadrant": "Paper 1",
+          "ring": "Apply",
+          "categoryId": "paper-1",
+          "levelId": "apply",
+          "order": 7,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.cell-structure-and-microscopy"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/microscopy-magnification-and-scale.mdx"
+        },
+        {
+          "id": "organelles-and-functions",
+          "packId": "aqa-biology-higher",
+          "name": "Organelles and their functions (nucleus, mitochondria, ribosomes)",
+          "title": "Organelles and their functions",
+          "quadrant": "Paper 1",
+          "ring": "Recall",
+          "categoryId": "paper-1",
+          "levelId": "recall",
+          "order": 6,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.cell-structure-and-microscopy"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/organelles-and-functions.mdx"
         },
         {
           "id": "osmosis-in-plant-and-animal-cells",
@@ -352,6 +424,30 @@
         }
       ],
       "skillsById": {
+        "cell-structure-prokaryote-eukaryote": {
+          "id": "cell-structure-prokaryote-eukaryote",
+          "packId": "aqa-biology-higher",
+          "name": "Cell structure (prokaryote vs eukaryote)",
+          "title": "Cell structure (prokaryote vs eukaryote)",
+          "quadrant": "Paper 1",
+          "ring": "Recall",
+          "categoryId": "paper-1",
+          "levelId": "recall",
+          "order": 5,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.cell-structure-and-microscopy"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/cell-structure-prokaryote-eukaryote.mdx"
+        },
         "diffusion-osmosis-active-transport": {
           "id": "diffusion-osmosis-active-transport",
           "packId": "aqa-biology-higher",
@@ -401,6 +497,54 @@
             "higher"
           ],
           "sourcePath": "content/packs/aqa-biology-higher/skills/homeostasis-basics.mdx"
+        },
+        "microscopy-magnification-and-scale": {
+          "id": "microscopy-magnification-and-scale",
+          "packId": "aqa-biology-higher",
+          "name": "Microscopy: magnification, image size and real size",
+          "title": "Microscopy: magnification, image size and real size",
+          "quadrant": "Paper 1",
+          "ring": "Apply",
+          "categoryId": "paper-1",
+          "levelId": "apply",
+          "order": 7,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.cell-structure-and-microscopy"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/microscopy-magnification-and-scale.mdx"
+        },
+        "organelles-and-functions": {
+          "id": "organelles-and-functions",
+          "packId": "aqa-biology-higher",
+          "name": "Organelles and their functions (nucleus, mitochondria, ribosomes)",
+          "title": "Organelles and their functions",
+          "quadrant": "Paper 1",
+          "ring": "Recall",
+          "categoryId": "paper-1",
+          "levelId": "recall",
+          "order": 6,
+          "status": "No Change",
+          "requiresSkills": [],
+          "prereqs": [],
+          "taughtByUnits": [
+            "unit.cell-structure-and-microscopy"
+          ],
+          "kitTags": [
+            "aqa",
+            "gcse",
+            "biology",
+            "higher"
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/skills/organelles-and-functions.mdx"
         },
         "osmosis-in-plant-and-animal-cells": {
           "id": "osmosis-in-plant-and-animal-cells",
@@ -672,6 +816,25 @@
       },
       "units": [
         {
+          "id": "unit.cell-structure-and-microscopy",
+          "packId": "aqa-biology-higher",
+          "title": "Cell structure and microscopy",
+          "summary": "Identify cell structures and confidently answer microscopy calculation questions (magnification, real size, image size).",
+          "teaches": [
+            "cell-structure-prokaryote-eukaryote",
+            "organelles-and-functions",
+            "microscopy-magnification-and-scale"
+          ],
+          "estimatedMinutes": 40,
+          "difficulty": "apply",
+          "doneWhen": [
+            "You can label animal/plant/bacterial cells and state key functions.",
+            "You can explain prokaryote vs eukaryote differences.",
+            "You can do magnification and size conversions without unit errors."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.cell-structure-and-microscopy.mdx"
+        },
+        {
           "id": "unit.homeostasis-intro",
           "packId": "aqa-biology-higher",
           "title": "Homeostasis (intro)",
@@ -831,6 +994,25 @@
         }
       ],
       "unitsById": {
+        "unit.cell-structure-and-microscopy": {
+          "id": "unit.cell-structure-and-microscopy",
+          "packId": "aqa-biology-higher",
+          "title": "Cell structure and microscopy",
+          "summary": "Identify cell structures and confidently answer microscopy calculation questions (magnification, real size, image size).",
+          "teaches": [
+            "cell-structure-prokaryote-eukaryote",
+            "organelles-and-functions",
+            "microscopy-magnification-and-scale"
+          ],
+          "estimatedMinutes": 40,
+          "difficulty": "apply",
+          "doneWhen": [
+            "You can label animal/plant/bacterial cells and state key functions.",
+            "You can explain prokaryote vs eukaryote differences.",
+            "You can do magnification and size conversions without unit errors."
+          ],
+          "sourcePath": "content/packs/aqa-biology-higher/units/unit.cell-structure-and-microscopy.mdx"
+        },
         "unit.homeostasis-intro": {
           "id": "unit.homeostasis-intro",
           "packId": "aqa-biology-higher",
