@@ -1,32 +1,48 @@
+import fs from "node:fs";
+import path from "node:path";
 import Link from "next/link";
+
+import matter from "gray-matter";
 import { notFound } from "next/navigation";
 
 import contentIndex from "../../../../../../../content/generated/content-index.json";
 
+import { BaselineQuiz, type BaselineMcq, type BaselineShort } from "@/components/BaselineQuiz";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-import { TransportInCellsBaselineQuiz } from "./transport-in-cells";
-
-export default async function BaselineQuizPage(props: { params: Promise<{ packId: string; id: string }> }) {
+export default async function BaselineQuizPage(props: {
+  params: Promise<{ packId: string; id: string }>;
+}) {
   const { packId, id } = await props.params;
 
   const pack = (contentIndex as any).packs?.[packId];
   if (!pack) return notFound();
 
   const unit = pack.unitsById?.[id];
-  if (!unit) return notFound();
+  if (!unit?.sourcePath) return notFound();
 
-  // MVP: only a single baseline quiz is implemented.
-  if (!(packId === "aqa-biology-higher" && id === "unit.transport-in-cells")) {
+  const filePath = path.join(process.cwd(), unit.sourcePath);
+  if (!fs.existsSync(filePath)) return notFound();
+
+  const raw = fs.readFileSync(filePath, "utf-8");
+  const parsed = matter(raw);
+  const d: any = parsed.data || {};
+
+  const teaches: string[] = Array.isArray(d.teaches) ? d.teaches.map(String) : [];
+
+  const baseline = (d.baseline ?? null) as any;
+  const mcqs: BaselineMcq[] = Array.isArray(baseline?.mcq) ? baseline.mcq : [];
+  const shorts: BaselineShort[] = Array.isArray(baseline?.short) ? baseline.short : [];
+
+  if (mcqs.length === 0 && shorts.length === 0) {
     return (
       <main className="mx-auto max-w-3xl p-6">
         <Card>
           <CardHeader>
             <CardTitle>Baseline quiz</CardTitle>
-            <CardDescription>
-              No baseline quiz exists for this lesson yet.
-            </CardDescription>
+            <CardDescription>No baseline quiz exists for this lesson yet.</CardDescription>
           </CardHeader>
           <CardContent>
             <Button variant="outline" asChild>
@@ -37,9 +53,6 @@ export default async function BaselineQuizPage(props: { params: Promise<{ packId
       </main>
     );
   }
-
-  // Skills taught by the unit (used for saving derived ratings).
-  const teaches = Array.isArray(unit.teaches) ? unit.teaches.map(String) : [];
 
   return (
     <main className="mx-auto max-w-3xl p-6 space-y-6">
@@ -62,7 +75,7 @@ export default async function BaselineQuizPage(props: { params: Promise<{ packId
         </CardContent>
       </Card>
 
-      <TransportInCellsBaselineQuiz packId={packId} unitId={id} teaches={teaches} />
+      <BaselineQuiz packId={packId} unitId={id} teaches={teaches} title={String(d.title ?? unit.title ?? id)} mcqs={mcqs} shorts={shorts} />
     </main>
   );
 }

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
-type Mcq = {
+export type BaselineMcq = {
   id: string;
   stem: string;
   choices: { id: string; text: string }[];
@@ -17,7 +17,7 @@ type Mcq = {
   points?: number; // default 1
 };
 
-type Short = {
+export type BaselineShort = {
   id: string;
   stem: string;
   marks: number;
@@ -39,174 +39,26 @@ function ratingFromPercent(pct: number): 0 | 1 | 2 | 3 {
   return 0;
 }
 
-export function TransportInCellsBaselineQuiz({
+export function BaselineQuiz({
   packId,
   unitId,
   teaches,
+  title,
+  mcqs,
+  shorts,
 }: {
   packId: string;
   unitId: string;
   teaches: string[];
+  title: string;
+  mcqs: BaselineMcq[];
+  shorts: BaselineShort[];
 }) {
-  const mcqs: Mcq[] = useMemo(
-    () => [
-      {
-        id: "mcq-1",
-        stem: "Which process describes the movement of water through a partially permeable membrane?",
-        choices: [
-          { id: "A", text: "Diffusion" },
-          { id: "B", text: "Osmosis" },
-          { id: "C", text: "Active transport" },
-          { id: "D", text: "Respiration" },
-        ],
-        answerId: "B",
-        explain: "Osmosis is the diffusion of water through a partially permeable membrane.",
-        skillId: "diffusion-osmosis-active-transport",
-      },
-      {
-        id: "mcq-2",
-        stem: "Which process requires energy?",
-        choices: [
-          { id: "A", text: "Diffusion" },
-          { id: "B", text: "Osmosis" },
-          { id: "C", text: "Active transport" },
-          { id: "D", text: "Evaporation" },
-        ],
-        answerId: "C",
-        explain: "Active transport uses energy from respiration to move substances against a gradient.",
-        skillId: "diffusion-osmosis-active-transport",
-      },
-      {
-        id: "mcq-3",
-        stem: "In diffusion, particles move overall from…",
-        choices: [
-          { id: "A", text: "low → high concentration" },
-          { id: "B", text: "high → low concentration" },
-          { id: "C", text: "inside → outside only" },
-          { id: "D", text: "outside → inside only" },
-        ],
-        answerId: "B",
-        skillId: "diffusion-osmosis-active-transport",
-      },
-      {
-        id: "mcq-4",
-        stem: "A plant cell is placed in a very concentrated sugar solution. What happens?",
-        choices: [
-          { id: "A", text: "It becomes turgid" },
-          { id: "B", text: "It becomes plasmolysed" },
-          { id: "C", text: "It bursts" },
-          { id: "D", text: "Nothing changes" },
-        ],
-        answerId: "B",
-        skillId: "osmosis-in-plant-and-animal-cells",
-      },
-      {
-        id: "mcq-5",
-        stem: "Why do villi help absorption in the small intestine?",
-        choices: [
-          { id: "A", text: "They reduce surface area" },
-          { id: "B", text: "They increase surface area" },
-          { id: "C", text: "They stop osmosis" },
-          { id: "D", text: "They prevent diffusion" },
-        ],
-        answerId: "B",
-        skillId: "surface-area-and-diffusion",
-      },
-      {
-        id: "mcq-6",
-        stem: "In the potato osmosis practical, what is usually the independent variable?",
-        choices: [
-          { id: "A", text: "Mass of the potato cylinder" },
-          { id: "B", text: "Concentration of the sugar/salt solution" },
-          { id: "C", text: "Temperature of the room" },
-          { id: "D", text: "Time of day" },
-        ],
-        answerId: "B",
-        skillId: "required-practical-osmosis",
-        explain: "You change the solution concentration and measure change in mass (or % change).",
-      },
-      {
-        id: "mcq-7",
-        stem: "Why should you blot the potato cylinders dry before weighing?",
-        choices: [
-          { id: "A", text: "To increase diffusion" },
-          { id: "B", text: "To remove excess solution that would affect the mass" },
-          { id: "C", text: "To cool the potato" },
-          { id: "D", text: "To stop active transport" },
-        ],
-        answerId: "B",
-        skillId: "required-practical-osmosis",
-      },
-    ],
-    [],
-  );
-
-  const shorts: Short[] = useMemo(
-    () => [
-      {
-        id: "sa-1",
-        stem: "Define diffusion.",
-        marks: 2,
-        markScheme: [
-          "Net movement of particles",
-          "From a region of higher concentration to lower concentration",
-        ],
-        skillId: "diffusion-osmosis-active-transport",
-      },
-      {
-        id: "sa-2",
-        stem: "Define osmosis.",
-        marks: 2,
-        markScheme: [
-          "Movement of water",
-          "Through a partially permeable membrane from dilute to more concentrated",
-        ],
-        skillId: "diffusion-osmosis-active-transport",
-      },
-      {
-        id: "sa-3",
-        stem: "Explain why active transport is needed to absorb glucose in the small intestine.",
-        marks: 3,
-        markScheme: [
-          "Sometimes glucose concentration is lower in the gut than in the blood/cells",
-          "So glucose must move against the concentration gradient",
-          "This requires energy (from respiration)",
-        ],
-        skillId: "diffusion-osmosis-active-transport",
-      },
-      {
-        id: "sa-4",
-        stem: "In the potato osmosis practical, state one control variable and how you would control it.",
-        marks: 2,
-        markScheme: [
-          "Any valid control variable (e.g. time in solution / size of cylinders / temperature)",
-          "How it is kept the same (e.g. same time for all, same length/diameter, use water bath)",
-        ],
-        skillId: "required-practical-osmosis",
-      },
-      {
-        id: "sa-5",
-        stem: "Describe how you would calculate percentage change in mass.",
-        marks: 2,
-        markScheme: [
-          "(final mass - initial mass) / initial mass × 100",
-          "Can be negative if mass decreases",
-        ],
-        skillId: "required-practical-osmosis",
-      },
-    ],
-    [],
-  );
-
   const assessedSkillIds = useMemo(() => {
-    // Only include skills that:
-    // 1) the unit teaches
-    // 2) have at least one question mapped
     const taught = new Set(teaches.map(String));
     const mapped = new Set<string>();
     for (const q of mcqs) mapped.add(q.skillId);
     for (const q of shorts) mapped.add(q.skillId);
-
     return Array.from(mapped).filter((sid) => taught.has(sid));
   }, [teaches, mcqs, shorts]);
 
@@ -228,14 +80,14 @@ export function TransportInCellsBaselineQuiz({
       totals[skillId].total += total;
     }
 
-    // MCQs (1 point each by default)
+    // MCQs
     for (const q of mcqs) {
       const pts = typeof q.points === "number" ? q.points : 1;
       const ok = mcqAnswers[q.id] && mcqAnswers[q.id] === q.answerId ? pts : 0;
       add(q.skillId, ok, pts);
     }
 
-    // Short answers (self-marked)
+    // Short answers
     for (const q of shorts) {
       const ok = Math.max(0, Math.min(q.marks, selfMarks[q.id] ?? 0));
       add(q.skillId, ok, q.marks);
@@ -258,13 +110,18 @@ export function TransportInCellsBaselineQuiz({
     return { ok, total, pct, rating: ratingFromPercent(pct) };
   }, [scoreBySkill]);
 
+  const unassessedTaughtSkills = useMemo(() => {
+    const taught = new Set(teaches.map(String));
+    const assessed = new Set(assessedSkillIds);
+    return Array.from(taught).filter((sid) => !assessed.has(sid));
+  }, [teaches, assessedSkillIds]);
+
   async function saveDerivedRatings() {
     setSaving(true);
     setError(null);
     setSaveOk(false);
 
     try {
-      // Mark unit as started.
       const p1 = await fetch("/api/unit-progress", {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -272,7 +129,6 @@ export function TransportInCellsBaselineQuiz({
       });
       if (!p1.ok) throw new Error("unit-progress");
 
-      // Save per-skill ratings (only for skills we actually assessed).
       for (const skillId of assessedSkillIds) {
         const s = scoreBySkill[skillId];
         const rating = (s?.rating ?? overall.rating) as 0 | 1 | 2 | 3;
@@ -294,18 +150,12 @@ export function TransportInCellsBaselineQuiz({
     }
   }
 
-  const unassessedTaughtSkills = useMemo(() => {
-    const taught = new Set(teaches.map(String));
-    const assessed = new Set(assessedSkillIds);
-    return Array.from(taught).filter((sid) => !assessed.has(sid));
-  }, [teaches, assessedSkillIds]);
-
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Transport in cells — baseline</CardTitle>
+        <CardTitle>{title} — baseline</CardTitle>
         <CardDescription>
-          5 MCQs + 3 short answers. After self-marking, we save **separate ratings per skill**.
+          {mcqs.length} MCQs + {shorts.length} short answers. After self-marking, we save separate ratings per skill.
         </CardDescription>
       </CardHeader>
 
@@ -342,9 +192,7 @@ export function TransportInCellsBaselineQuiz({
                       Correct answer: <span className="font-semibold">{q.answerId}</span>
                       {mcqAnswers[q.id] ? (
                         <span
-                          className={
-                            mcqAnswers[q.id] === q.answerId ? "text-green-700" : "text-red-700"
-                          }
+                          className={mcqAnswers[q.id] === q.answerId ? "text-green-700" : "text-red-700"}
                         >
                           {mcqAnswers[q.id] === q.answerId ? "  ✓" : "  ✗"}
                         </span>
@@ -430,7 +278,9 @@ export function TransportInCellsBaselineQuiz({
                   return (
                     <tr key={sid} className="border-t">
                       <td className="py-1 pr-3 font-mono text-xs">{sid}</td>
-                      <td className="py-1 pr-3">{s.ok}/{s.total}</td>
+                      <td className="py-1 pr-3">
+                        {s.ok}/{s.total}
+                      </td>
                       <td className="py-1 pr-3">{Math.round(s.pct * 100)}%</td>
                       <td className="py-1 font-semibold">{s.rating}</td>
                     </tr>
