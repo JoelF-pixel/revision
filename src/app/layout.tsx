@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RAFT — Prototype Kit training",
-  description: "RAFT: Hippo Digital prototype kit training and skills assessment.",
+  title: "RevTree — Prototype Kit training",
+  description: "RevTree: revision navigation and skills assessment.",
 };
 
 export default function RootLayout({

@@ -29,9 +29,15 @@ export type Skill = {
   quadrant: string;
   ring: string;
 
+  /** Optional pack-specific sub-structure (e.g. Maths: Substrand) */
+  substrand?: string;
+
   /** Normalized ids (validated against pack manifest) */
   categoryId: string;
   levelId: string;
+
+  /** Optional category-specific tiering (e.g. English Skills tier 1–3) */
+  tierId?: string;
 
   order?: number;
   status?: string;
@@ -166,16 +172,21 @@ function readSkills(packId: string, skillsDir: string): Skill[] {
 
     const description = extractDescriptionFromMdxBody(parsed.content || "");
 
+    const substrandMatch = String(parsed.content || "").match(/\*\*Substrand:\*\*\s*([^\n]+)/i);
+    const substrand = substrandMatch ? String(substrandMatch[1]).trim() : undefined;
+
     skills.push({
       id,
       packId,
       name,
       title: d.title ? String(d.title) : undefined,
       description,
+      substrand,
       quadrant,
       ring,
       categoryId: String(d.categoryId || slugify(quadrant)),
       levelId: String(d.levelId || slugify(ring)),
+      tierId: d.tierId ? String(d.tierId) : d.difficultyTierId ? String(d.difficultyTierId) : undefined,
       order: typeof d.order === "number" ? d.order : d.order ? Number(d.order) : undefined,
       status: d.status ? String(d.status) : undefined,
       requiresSkills: Array.isArray(d.requiresSkills) ? d.requiresSkills.map(String) : [],
@@ -368,9 +379,12 @@ export function buildContentIndex(repoRoot: string): ContentIndex {
 
   // Default pack: env var override or first directory.
   const defaultPackId =
-    process.env["RAFT_PACK"] && packs[process.env["RAFT_PACK"]]
-      ? process.env["RAFT_PACK"]
-      : packIds[0];
+    ((process.env["REVTREE_PACK"] && packs[process.env["REVTREE_PACK"]]) ||
+      (process.env["RAFT_PACK"] && packs[process.env["RAFT_PACK"]])
+      ? (process.env["REVTREE_PACK"] ?? process.env["RAFT_PACK"])
+      : packIds[0]) ??
+    packIds[0] ??
+    "";
 
   return {
     generatedAt: new Date().toISOString(),

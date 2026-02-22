@@ -1,0 +1,22 @@
+{
+  "id": "gcse-physics-higher",
+  "name": "AQA GCSE Physics — Higher (Revision Pack)",
+  "description": "AQA GCSE Physics Higher revision pack (skills + lessons). Built from topic checklists + knowledge organisers.",
+  "categories": [
+    { "id": "p1-energy", "title": "4.1 Energy" },
+    { "id": "p1-electricity", "title": "4.2 Electricity" },
+    { "id": "p1-particle-model", "title": "4.3 Particle model of matter" },
+    { "id": "p1-atomic", "title": "4.4 Atomic structure" },
+    { "id": "p2-forces", "title": "4.5 Forces" },
+    { "id": "p2-waves", "title": "4.6 Waves" },
+    { "id": "p2-magnetism", "title": "4.7 Magnetism and electromagnetism" },
+    { "id": "p2-space", "title": "4.8 Space physics" },
+    { "id": "p1-required-practicals", "title": "Paper 1 — Required practicals" },
+    { "id": "p2-required-practicals", "title": "Paper 2 — Required practicals" }
+  ],
+  "levels": [
+    { "id": "combined", "title": "Combined" },
+    { "id": "higher-combined", "title": "Higher combined" },
+    { "id": "triple-only", "title": "Triple only" }
+  ]
+}

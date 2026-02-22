@@ -1,0 +1,69 @@
+{
+  "id": "gcse-chemistry-higher",
+  "name": "AQA GCSE Chemistry \u2014 Higher (Revision Pack)",
+  "description": "AQA GCSE Chemistry Higher revision pack (skills + lessons). Built from your revision resources.",
+  "categories": [
+    {
+      "id": "p1-atomic-structure",
+      "title": "4.1 Atomic structure and the periodic table"
+    },
+    {
+      "id": "p1-bonding",
+      "title": "4.2 Bonding, structure, and the properties of matter"
+    },
+    {
+      "id": "p1-quantitative",
+      "title": "4.3 Quantitative chemistry"
+    },
+    {
+      "id": "p1-chemical-changes",
+      "title": "4.4 Chemical changes"
+    },
+    {
+      "id": "p1-energy-changes",
+      "title": "4.5 Energy changes"
+    },
+    {
+      "id": "p1-required-practicals",
+      "title": "Paper 1 \u2014 Required practicals"
+    },
+    {
+      "id": "p2-rate-and-extent",
+      "title": "4.6 The rate and extent of chemical change"
+    },
+    {
+      "id": "p2-organic",
+      "title": "4.7 Organic chemistry"
+    },
+    {
+      "id": "p2-chemical-analysis",
+      "title": "4.8 Chemical analysis"
+    },
+    {
+      "id": "p2-atmosphere",
+      "title": "4.9 Chemistry of the atmosphere"
+    },
+    {
+      "id": "p2-using-resources",
+      "title": "4.10 Using resources"
+    },
+    {
+      "id": "p2-required-practicals",
+      "title": "Paper 2 \u2014 Required practicals"
+    }
+  ],
+  "levels": [
+    {
+      "id": "combined",
+      "title": "Combined"
+    },
+    {
+      "id": "higher-combined",
+      "title": "Higher combined"
+    },
+    {
+      "id": "triple-only",
+      "title": "Triple only"
+    }
+  ]
+}

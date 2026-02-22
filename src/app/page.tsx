@@ -22,7 +22,7 @@ export default function Home() {
     <main className="mx-auto max-w-6xl p-6 space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">RAFT</CardTitle>
+          <CardTitle className="text-2xl">RevTree</CardTitle>
           <CardDescription>Pick a pack to start learning or continue where you left off.</CardDescription>
         </CardHeader>
         <CardContent>

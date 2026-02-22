@@ -1,6 +1,6 @@
-# RAFT — Pack-based learning app
+# RevTree — Pack-based learning app
 
-RAFT is a skill-first learning + reference app built on **Next.js App Router**.
+RevTree is a skill-first learning + reference app built on **Next.js App Router**.
 
 It’s **pack-based**: each pack defines its own categories/levels and includes its own skills + lessons. Packs are addressed via routes like:
 

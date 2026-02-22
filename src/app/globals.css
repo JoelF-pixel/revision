@@ -48,20 +48,28 @@
 }
 
 :root {
-  /* Hippo brand */
-  --brand-wave: #005e5d;
-  --brand-wave-light: #6b8591;
-  --brand-flamingo: #ffa3b5;
-  --brand-turmeric: #0c2340;
-  --brand-mist: #edf1f3;
+  /* Brand (calm/premium “aurora”)
+     - Teal is the primary action colour
+     - Purple is a secondary flourish
+     - Navy stays as the ink colour
+  */
+  --brand-wave: #0b6f8a; /* aurora teal (less green, more blue) */
+  --brand-wave-light: #6b8591; /* slate */
+  --brand-aurora-purple: #6f42c1; /* flourish */
+  --brand-flamingo: #ffa3b5; /* occasional highlight */
+  --brand-turmeric: #0c2340; /* ink */
+  --brand-mist: #f2f6f7; /* page wash */
 
   /* Tailwind Typography tokens (used by `.prose :where(pre)...`) */
   --tw-prose-pre-bg: var(--brand-mist);
 
   --radius: 1rem;
-  --background: oklch(1 0 0);
+  /* Subtle warm-cool paper background */
+  --background: oklch(0.993 0.008 190);
   --foreground: var(--brand-turmeric);
-  --card: oklch(1 0 0);
+
+  /* Cards slightly brighter than page to feel “lifted” */
+  --card: oklch(0.998 0.004 190);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
@@ -71,12 +79,13 @@
   --secondary-foreground: var(--brand-turmeric);
   --muted: var(--brand-mist);
   --muted-foreground: var(--brand-wave-light);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  /* Accent is a soft purple tint used for hover/selected surfaces */
+  --accent: color-mix(in oklab, white 92%, var(--brand-aurora-purple) 8%);
+  --accent-foreground: var(--brand-turmeric);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --ring: color-mix(in oklab, var(--brand-wave) 45%, white 55%);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -90,15 +99,33 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* Radar (SVG) colours */
+  --radar-slice-stroke: rgba(0, 0, 0, 0.06);
+  --radar-ring-stroke: rgba(0, 0, 0, 0.14);
+  --radar-tier-stroke: rgba(0, 0, 0, 0.12);
+  --radar-label: rgba(0, 0, 0, 0.55);
 }
 
 .dark {
   /* Tailwind Typography tokens */
   --tw-prose-pre-bg: var(--card);
 
-  /* Dark mode palette: keep the Hippo navy as the hue, but lift overall lightness.
-     Use darker tints for surfaces (cards/blocks) so the content sits “inside” the page. */
-  --background: color-mix(in oklab, var(--brand-turmeric) 85%, white 15%);
+  /* Dark mode palette: deep navy with aurora accents */
+  --background: color-mix(in oklab, var(--brand-turmeric) 92%, black 8%);
+  --foreground: oklch(0.985 0 0);
+
+  /* Radar (SVG) colours (higher contrast on dark backgrounds) */
+  --radar-slice-stroke: rgba(255, 255, 255, 0.08);
+  --radar-ring-stroke: rgba(255, 255, 255, 0.20);
+  --radar-tier-stroke: rgba(255, 255, 255, 0.16);
+  --radar-label: rgba(255, 255, 255, 0.62);
+
+  /* Tailwind Typography tokens */
+  --tw-prose-pre-bg: var(--card);
+
+  /* Dark mode palette: deep navy with aurora accents */
+  --background: color-mix(in oklab, var(--brand-turmeric) 92%, black 8%);
   --foreground: oklch(0.985 0 0);
 
   /* Surfaces darker than the page background */
@@ -106,7 +133,7 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: color-mix(in oklab, var(--brand-turmeric) 94%, black 6%);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: var(--brand-flamingo);
+  --primary: color-mix(in oklab, var(--brand-wave) 70%, white 30%);
   --primary-foreground: var(--brand-turmeric);
   --secondary: color-mix(in oklab, var(--brand-turmeric) 90%, black 10%);
   --secondary-foreground: oklch(0.985 0 0);
@@ -134,16 +161,17 @@
 }
 
 @layer utilities {
+  /* Legacy utility class (kept for now): re-skins to aurora primary */
   .btn-hippo-green {
     background-color: var(--brand-wave);
     color: white;
   }
   .btn-hippo-green:hover {
-    background-color: color-mix(in oklab, var(--brand-wave) 88%, black 12%);
+    background-color: color-mix(in oklab, var(--brand-wave) 86%, black 14%);
   }
   .btn-hippo-green:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 4px color-mix(in oklab, var(--brand-wave) 35%, transparent);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--brand-wave) 40%, transparent);
   }
 }
 
@@ -153,6 +181,21 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Aurora flourish (very subtle). Kept as an overlay so components remain token-driven. */
+    background-image:
+      radial-gradient(1000px 560px at 16% 10%, color-mix(in oklab, var(--brand-wave) 40%, transparent) 0%, transparent 66%),
+      radial-gradient(920px 600px at 80% 14%, color-mix(in oklab, var(--brand-aurora-purple) 34%, transparent) 0%, transparent 66%),
+      radial-gradient(980px 720px at 52% 96%, color-mix(in oklab, var(--brand-wave) 24%, transparent) 0%, transparent 72%),
+      radial-gradient(1100px 760px at 56% 44%, color-mix(in oklab, var(--brand-aurora-purple) 16%, transparent) 0%, transparent 74%);
+    background-attachment: fixed;
+  }
+
+  .dark body {
+    background-image:
+      radial-gradient(1050px 620px at 18% 10%, color-mix(in oklab, var(--brand-wave) 32%, transparent) 0%, transparent 72%),
+      radial-gradient(980px 640px at 82% 12%, color-mix(in oklab, var(--brand-aurora-purple) 30%, transparent) 0%, transparent 74%),
+      radial-gradient(1200px 820px at 55% 55%, color-mix(in oklab, var(--brand-aurora-purple) 18%, transparent) 0%, transparent 78%);
+    background-attachment: fixed;
   }
 
   /* Better default document rhythm for MDX content */

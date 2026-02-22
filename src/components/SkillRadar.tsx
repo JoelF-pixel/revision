@@ -13,11 +13,15 @@ type Skill = {
   description?: string;
   categoryId?: string;
   levelId?: string;
+  /** Optional pack-specific subgrouping (e.g. Maths: Substrand) */
+  substrand?: string;
   order?: number;
   status?: string;
   prereqs?: string[];
   taughtByUnits?: string[];
   kitTags?: string[];
+  /** Optional category-specific tiering (e.g. English Skills tier 1–3) */
+  tierId?: string;
 };
 
 type Unit = {
@@ -74,7 +78,7 @@ export function SkillRadar({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showLabels, setShowLabels] = useState(false);
   const [showNumbers, setShowNumbers] = useState(false);
-  const [showLinks, setShowLinks] = useState(true);
+  const [showLinks, setShowLinks] = useState(false);
   const [focusSelection, setFocusSelection] = useState(false);
 
   // Fetch ratings (pack-scoped)
@@ -171,7 +175,8 @@ export function SkillRadar({
 
     const rect = container.getBoundingClientRect();
     const width = Math.max(600, Math.floor(rect.width));
-    const height = 680;
+    // Give dense packs more room vertically; keep responsive.
+    const height = Math.max(860, Math.floor(width * 0.9));
 
     svg.attr("viewBox", `0 0 ${width} ${height}`).attr("width", width).attr("height", height);
 
@@ -179,7 +184,7 @@ export function SkillRadar({
 
     const cx = width / 2;
     const cy = height / 2;
-    const margin = 40;
+    const margin = 50;
     const rMax = Math.min(width, height) / 2 - margin;
 
     const levels = manifest.levels.length ? manifest.levels : [{ id: "working", title: "Working" }];
@@ -202,20 +207,41 @@ export function SkillRadar({
       ? preferredOrder.map((id) => byId.get(id)!)
       : categoriesRaw;
 
-    // Rings: weighted by level (inner ring bigger)
+    // Rings: weighted by level.
+    // For our GCSE grade bands (3 rings), the middle ring benefits from more space.
     const ringCount = levels.length;
-    const weights = ringCount > 1 ? [0.5, ...Array.from({ length: ringCount - 1 }, () => 0.5 / (ringCount - 1))] : [1];
+    const weights =
+      ringCount === 3
+        ? [0.32, 0.52, 0.16] // inner, middle, outer
+        : ringCount > 1
+          ? [0.5, ...Array.from({ length: ringCount - 1 }, () => 0.5 / (ringCount - 1))]
+          : [1];
+
     const radii: number[] = [0];
     for (let i = 0; i < ringCount; i++) radii.push(radii[i] + rMax * weights[i]);
 
     // Category slices (quadrants)
     const sliceCount = categories.length;
-    const sliceAngle = (Math.PI * 2) / sliceCount;
 
-    // Start so the first category lands in the TOP-LEFT quadrant.
     // Angles here are in [0..2π) with 0 at top (we apply a -π/2 shift when converting to SVG).
     const TAU = Math.PI * 2;
+    const sliceAngle = TAU / sliceCount;
+
+    // Start so the first category lands in the TOP-LEFT quadrant.
     const sliceStart = (3 * Math.PI) / 2; // 270° (left)
+
+    const isEnglish = String(packId) === "gcse-english";
+    const skillsLevelId = "skills";
+    const examLevelId = "exam";
+    const skillsRingOuter = radii[1] ?? 0; // ring 0->1 is the inner ring
+
+    // English pack: tier sub-rings inside the Skills ring.
+    const skillsTierIds = ["tier-1", "tier-2", "tier-3"];
+    const skillsTierTitles = ["Tier 1", "Tier 2", "Tier 3"];
+    // Give Tier 3 a bit more room; Tier 2 was feeling too chunky.
+    const skillsTierWeights = [0.34, 0.36, 0.30];
+    const skillsTierRadii: number[] = [0];
+    for (let i = 0; i < 3; i++) skillsTierRadii.push(skillsTierRadii[i] + skillsRingOuter * skillsTierWeights[i]);
 
     // Background group
     const g = svg.append("g").attr("transform", `translate(${cx},${cy})`);
@@ -227,9 +253,11 @@ export function SkillRadar({
       const a1 = a0 + sliceAngle;
 
       // Convert from our "top=0" angle system to SVG arc system (0 on x-axis)
+      // English pack: don't slice the inner (Skills) ring — only slice from the Exam ring outwards.
+      const innerR = isEnglish ? skillsRingOuter : 0;
       const arc = d3
         .arc()
-        .innerRadius(0)
+        .innerRadius(innerR)
         .outerRadius(rMax)
         .startAngle(a0 - Math.PI / 2)
         .endAngle(a1 - Math.PI / 2);
@@ -238,7 +266,7 @@ export function SkillRadar({
         .append("path")
         .attr("d", arc as any)
         .attr("fill", i % 2 === 0 ? "rgba(0,0,0,0.02)" : "rgba(0,0,0,0.00)")
-        .attr("stroke", "rgba(0,0,0,0.05)")
+        .attr("stroke", "var(--radar-slice-stroke)")
         .attr("stroke-width", 1);
 
       const labelAngle = (a0 + a1) / 2;
@@ -253,7 +281,7 @@ export function SkillRadar({
         .attr("text-anchor", "middle")
         .attr("dominant-baseline", "middle")
         .attr("font-size", 12)
-        .attr("fill", "rgba(0,0,0,0.55)")
+        .attr("fill", "var(--radar-label)")
         .text(categories[i].title);
     }
 
@@ -264,7 +292,7 @@ export function SkillRadar({
         .append("circle")
         .attr("r", radii[i])
         .attr("fill", "none")
-        .attr("stroke", "rgba(0,0,0,0.12)")
+        .attr("stroke", "var(--radar-ring-stroke)")
         .attr("stroke-width", 1);
 
       const lvl = levels[i - 1];
@@ -274,16 +302,48 @@ export function SkillRadar({
         .attr("y", -radii[i] + 14)
         .attr("text-anchor", "middle")
         .attr("font-size", 11)
-        .attr("fill", "rgba(0,0,0,0.55)")
+        .attr("font-weight", isEnglish && lvl.id === skillsLevelId ? 700 : 400)
+        .attr("fill", "var(--radar-label)")
         .text(lvl.title);
     }
 
-    const colorByRating = (rating: number) => {
-      // Align with our palette-ish: 0 gray, 1 teal, 2 purple-ish, 3 pink-ish
-      if (rating <= 0) return "rgba(107,133,145,0.75)"; // wave-light
-      if (rating === 1) return "rgba(0,94,93,0.85)"; // wave
-      if (rating === 2) return "rgba(111,66,193,0.85)"; // purple
-      return "rgba(255,163,181,0.95)"; // flamingo
+    // English pack: draw tier circles + labels inside the Skills ring.
+    if (isEnglish && ringCount >= 2 && (levels[0]?.id ?? "") === skillsLevelId) {
+      for (let i = 1; i <= 3; i++) {
+        ringG
+          .append("circle")
+          .attr("r", skillsTierRadii[i])
+          .attr("fill", "none")
+          .attr("stroke", "var(--radar-tier-stroke)")
+          .attr("stroke-width", 1);
+
+        // Tier labels: put 1 and 2 back at the top; put 3 under the main Skills label.
+        const isTier3 = i === 3;
+        const x = 0;
+        const y = isTier3 ? -skillsRingOuter + 26 : -skillsTierRadii[i] + 12;
+        ringG
+          .append("text")
+          .attr("x", x)
+          .attr("y", y)
+          .attr("text-anchor", "middle")
+          .attr("font-size", 10)
+          .attr("fill", "color-mix(in oklab, var(--radar-label) 82%, transparent)")
+          .text(isTier3 ? "Tier 3" : skillsTierTitles[i - 1]);
+      }
+    }
+
+    const colorByRating = (rating: number | undefined | null) => {
+      // RAG-style status colours.
+      // undefined/null = undecided
+      // 0 = incomplete
+      // 1 = working/comfortable
+      // 2 = secure/complete
+      // 3 = confident
+      if (rating === undefined || rating === null) return "rgba(107,133,145,0.75)"; // undecided grey
+      if (rating <= 0) return "rgba(239, 68, 68, 0.88)"; // red
+      if (rating === 1) return "rgba(245, 158, 11, 0.88)"; // amber
+      if (rating === 2) return "rgba(34, 197, 94, 0.86)"; // green
+      return "rgba(22, 163, 74, 0.88)"; // deep green
     };
 
     function halton(index: number, base: number): number {
@@ -305,23 +365,35 @@ export function SkillRadar({
       const li = levelRank(manifest, s.levelId);
       const ci = categoryRank(manifest, s.categoryId);
 
-      const ringInner = radii[li] ?? 0;
-      const ringOuter = radii[li + 1] ?? rMax;
+      let ringInner = radii[li] ?? 0;
+      let ringOuter = radii[li + 1] ?? rMax;
 
-      const a0 = (sliceStart + ci * sliceAngle) % TAU;
-      const a1 = a0 + sliceAngle;
+      // English pack: map Skills-tier dots into sub-rings within the Skills ring.
+      if (isEnglish && String(s.levelId || "") === skillsLevelId) {
+        const tId = String((s as any).tierId || "tier-2");
+        const ti = Math.max(0, skillsTierIds.indexOf(tId));
+        ringInner = skillsTierRadii[ti];
+        ringOuter = skillsTierRadii[ti + 1] ?? skillsRingOuter;
+      }
+
+      // English pack: Skills ring is not sliced by categories.
+      const isSkills = isEnglish && String(s.levelId || "") === skillsLevelId;
+
+      const span = isSkills ? TAU : sliceAngle;
+      const a0 = isSkills ? 0 : (sliceStart + ci * sliceAngle) % TAU;
+      const a1 = a0 + span;
       const wraps = a1 > TAU;
 
-      const key = `${li}|${ci}`;
+      const key = isSkills ? `${li}|__all__` : `${li}|${ci}`;
       const n = (groupCounters.get(key) ?? 0) + 1;
       groupCounters.set(key, n);
 
       // Halton gives a more even spread than naive RNG.
-      const u = 0.05 + 0.9 * halton(n, 2); // angle within slice
+      const u = 0.05 + 0.9 * halton(n, 2); // angle within slice/span
       const v = 0.05 + 0.9 * halton(n, 3); // radius within ring
 
       // Angle in our [0..2π) system, with wrap handled.
-      let angle = a0 + sliceAngle * u;
+      let angle = a0 + span * u;
       if (angle >= TAU) angle -= TAU;
 
       // Uniform-in-area radius distribution inside an annulus
@@ -340,6 +412,7 @@ export function SkillRadar({
         a0,
         a1,
         wraps,
+        sliceSpan: span,
         x0,
         y0,
         x: x0,
@@ -353,11 +426,61 @@ export function SkillRadar({
       .forceSimulation(nodes)
       .alpha(1)
       .alphaDecay(0.08)
-      .force("collide", d3.forceCollide(7).strength(0.9))
-      .force("x", d3.forceX((d: any) => d.x0).strength(0.08))
-      .force("y", d3.forceY((d: any) => d.y0).strength(0.08));
+      .force(
+        "charge",
+        d3.forceManyBody().strength((d: any) => {
+          const id = String(d.id || "");
+          const isHub =
+            (packId === "gcse-maths" && id.startsWith("maths-subsection-")) ||
+            (packId === "gcse-chemistry-higher" && /^aqa-chem-4-\d+-\d+$/.test(id));
+          return isHub ? -16 : -6;
+        }),
+      )
+      .force("radial", d3.forceRadial((d: any) => (d.ringInner + d.ringOuter) / 2).strength(0.035))
+      .force(
+        "collide",
+        d3
+          .forceCollide((d: any) => {
+            const id = String(d.id || "");
+            const isMathsPack = packId === "gcse-maths";
+            const isHub =
+              (packId === "gcse-maths" && id.startsWith("maths-subsection-")) ||
+              (packId === "gcse-chemistry-higher" && /^aqa-chem-4-\d+-\d+$/.test(id));
+            const isPracticeLocal = /past-?papers|practice-?banks|exam-?questions?/i.test(id);
 
-    for (let i = 0; i < 60; i++) {
+            // Approximate visual radius + stroke + a small gap so dots never touch.
+            const base = isMathsPack ? 3.6 : 4.25;
+            const r = isHub ? (isMathsPack ? 3.9 : 4.4) : base;
+            const strokeGap = isHub ? (isMathsPack ? 1.8 : 2.25) : isPracticeLocal ? (isMathsPack ? 2.0 : 2.25) : isMathsPack ? 1.2 : 1.5;
+            const gap = isMathsPack ? 2.2 : 2.0;
+            return r + strokeGap + gap;
+          })
+          .strength(1)
+          .iterations(3),
+      )
+      // Let hub dots scatter a bit more within their bounds.
+      .force(
+        "x",
+        d3.forceX((d: any) => d.x0).strength((d: any) => {
+          const id = String(d.id || "");
+          const isHub =
+            (packId === "gcse-maths" && id.startsWith("maths-subsection-")) ||
+            (packId === "gcse-chemistry-higher" && /^aqa-chem-4-\d+-\d+$/.test(id));
+          return isHub ? 0.035 : 0.08;
+        }),
+      )
+      .force(
+        "y",
+        d3.forceY((d: any) => d.y0).strength((d: any) => {
+          const id = String(d.id || "");
+          const isHub =
+            (packId === "gcse-maths" && id.startsWith("maths-subsection-")) ||
+            (packId === "gcse-chemistry-higher" && /^aqa-chem-4-\d+-\d+$/.test(id));
+          return isHub ? 0.035 : 0.08;
+        }),
+      );
+
+    for (let i = 0; i < 180; i++) {
       sim.tick();
       // Clamp nodes back into their ring+slice bounds
       for (const d of nodes) {
@@ -365,21 +488,12 @@ export function SkillRadar({
         const ang = Math.atan2(d.y, d.x) + Math.PI / 2; // undo our -pi/2 earlier
         const aNorm = (ang + TAU) % TAU;
 
-        // Clamp angle to slice, handling wrap-around at 0/2π.
+        // Clamp angle robustly using modular arithmetic (avoids wrap bugs).
         const pad = 0.02;
-        let aClamped = aNorm;
-        if (!d.wraps) {
-          aClamped = Math.min(Math.max(aNorm, d.a0 + pad), d.a1 - pad);
-        } else {
-          const a1m = d.a1 - TAU; // wrapped end in [0..2π)
-          const inSlice = aNorm >= d.a0 + pad || aNorm <= a1m - pad;
-          if (!inSlice) {
-            // Snap to nearest boundary
-            const distToA0 = Math.abs(aNorm - (d.a0 + pad));
-            const distToA1 = Math.abs(aNorm - (a1m - pad));
-            aClamped = distToA0 < distToA1 ? d.a0 + pad : a1m - pad;
-          }
-        }
+        const span = Number(d.sliceSpan) || sliceAngle;
+        const delta = (aNorm - d.a0 + TAU) % TAU; // angle relative to slice start
+        const deltaClamped = Math.min(Math.max(delta, pad), span - pad);
+        const aClamped = (d.a0 + deltaClamped) % TAU;
 
         const rr = Math.sqrt(d.x * d.x + d.y * d.y);
         const rClamped = Math.min(Math.max(rr, d.ringInner + 6), d.ringOuter - 6);
@@ -395,6 +509,23 @@ export function SkillRadar({
     const prereqIdsLocal = prereqIds;
     const dependentIdsLocal = dependentIds;
     const connectedIdsLocal = connectedIds;
+
+    // Make important "hub" skills pop on dense trees.
+    // - Maths: past papers + practice banks
+    // - Chemistry: spec subsection hubs (e.g. aqa-chem-4-1-1)
+    const isImportantHub = (id: string) => {
+      if (packId === "gcse-maths") return id.startsWith("maths-subsection-");
+      if (packId === "gcse-chemistry-higher") return /^aqa-chem-4-\d+-\d+$/.test(id);
+      if (packId === "gcse-physics-higher") return /^aqa-phys-4-\d+-\d+$/.test(id);
+      return false;
+    };
+
+    const isPractice = (s: any) => {
+      const id = String(s?.id ?? "");
+      const tags: string[] = Array.isArray(s?.kitTags) ? s.kitTags.map(String) : [];
+      if (tags.includes("practice")) return true;
+      return /past-?papers|practice-?banks|exam-?questions?/i.test(id);
+    };
 
     const linkG = g.append("g").attr("opacity", showLinks ? 1 : 0);
 
@@ -414,10 +545,10 @@ export function SkillRadar({
         const isConnectedEdge = selectedId && (isPrereqEdge || isNextEdge);
 
         const stroke = isPrereqEdge
-          ? "rgba(111,66,193,0.55)" // prereqs: purple
+          ? "rgba(111,66,193,0.75)" // prereqs: purple
           : isNextEdge
-            ? "rgba(0,94,93,0.55)" // next: teal
-            : "rgba(0,0,0,0.12)";
+            ? "rgba(0,94,93,0.75)" // next: teal
+            : "rgba(0,0,0,0.22)";
 
         linkG
           .append("line")
@@ -426,8 +557,9 @@ export function SkillRadar({
           .attr("x2", b.x)
           .attr("y2", b.y)
           .attr("stroke", stroke)
-          .attr("stroke-width", isConnectedEdge ? 2 : 1)
-          .attr("opacity", !selectedId ? 1 : isConnectedEdge ? 1 : 0.35);
+          .attr("stroke-linecap", "round")
+          .attr("stroke-width", isConnectedEdge ? 3 : 1.5)
+          .attr("opacity", !selectedId ? 1 : isConnectedEdge ? 1 : 0.25);
       });
 
     const nodeG = g.append("g");
@@ -451,27 +583,59 @@ export function SkillRadar({
       .join("circle")
       .attr("cx", (d: any) => d.x)
       .attr("cy", (d: any) => d.y)
-      .attr("r", (d: any) => (d.id === selectedId ? 6 : prereqIdsLocal.has(d.id) || dependentIdsLocal.has(d.id) ? 5.5 : 5))
-      .attr("fill", (d: any) => colorByRating(ratings[d.id] ?? 0))
+      .attr("r", (d: any) => {
+        const isMathsPack = packId === "gcse-maths";
+        if (d.id === selectedId) return 6;
+
+        // Maths is dense: slightly smaller baseline dots so the full-map view is calmer.
+        const base = isMathsPack ? 3.6 : 4.25;
+
+        // Practice dots should look like normal dots, just recoloured + rim.
+        if (isPractice(d)) return base;
+        // Hub dots: smaller, subtler
+        if (isImportantHub(d.id)) return isMathsPack ? 3.9 : 4.4;
+        if (prereqIdsLocal.has(d.id) || dependentIdsLocal.has(d.id)) return isMathsPack ? 4.6 : 5;
+        return base;
+      })
+      .attr("fill", (d: any) => {
+        // Aurora hub highlight (distinguishable, not obnoxious)
+        // Practice takes priority over hub styling (e.g. Maths past papers / practice banks).
+        if (isPractice(d)) return "rgba(255, 163, 181, 0.92)"; // practice (pink)
+        if (isImportantHub(d.id)) return "rgba(142, 92, 246, 0.54)"; // sub-section (hub)
+        const has = Object.prototype.hasOwnProperty.call(ratings, d.id);
+        return colorByRating(has ? ratings[d.id] : undefined);
+      })
       .attr("opacity", (d: any) => {
         if (!selectedId) return 1;
         if (!focusSelection) return 1;
-        return connectedIdsLocal.has(d.id) ? 1 : 0.15;
+        if (connectedIdsLocal.has(d.id)) return 1;
+        // Keep important hubs faintly visible even when focusing.
+        if (isImportantHub(d.id)) return 0.55;
+        return 0.15;
       })
       .attr("stroke", (d: any) => {
         if (d.id === selectedId) return "rgba(12,35,64,0.9)";
+        if (isPractice(d)) return "rgba(123, 45, 84, 0.90)"; // darker rim for pink practice dots
+        if (isImportantHub(d.id)) return "rgba(183, 148, 255, 0.80)"; // light lilac outline
         if (prereqIdsLocal.has(d.id)) return "rgba(111,66,193,0.9)";
         if (dependentIdsLocal.has(d.id)) return "rgba(0,94,93,0.9)";
         return "white";
       })
-      .attr("stroke-width", (d: any) => (d.id === selectedId || prereqIdsLocal.has(d.id) || dependentIdsLocal.has(d.id) ? 2 : 1.5))
+      .attr("stroke-width", (d: any) => {
+        const isMathsPack = packId === "gcse-maths";
+        if (d.id === selectedId) return 2.5;
+        if (isImportantHub(d.id)) return isMathsPack ? 1.8 : 2.25;
+        if (isPractice(d)) return isMathsPack ? 2.0 : 2.25;
+        return d.id === selectedId || prereqIdsLocal.has(d.id) || dependentIdsLocal.has(d.id) ? 2 : isMathsPack ? 1.2 : 1.5;
+      })
       .style("cursor", "pointer")
       .on("mouseenter", (event: any, d: any) => {
         tooltip
           .style("opacity", "1")
           .html(
             `<div style="font-weight:600; margin-bottom:2px;">${d.name}</div>` +
-              `<div>rating: <b>${ratings[d.id] ?? 0}</b></div>`
+              `<div>rating: <b>${ratings[d.id] ?? 0}</b></div>` +
+              (isImportantHub(d.id) ? `<div style="margin-top:2px; opacity:0.95;">hub</div>` : "")
           );
       })
       .on("mousemove", (event: any) => {
@@ -517,10 +681,12 @@ export function SkillRadar({
         .text((d: any) => d.name);
     }
 
+    // (Important hub labels removed to keep the tree uncluttered.)
+
     // Zoom/pan
     const zoom = d3
       .zoom<SVGSVGElement, unknown>()
-      .scaleExtent([0.8, 2.5])
+      .scaleExtent([0.6, 4])
       .on("zoom", (event) => {
         g.attr("transform", `translate(${event.transform.x + cx},${event.transform.y + cy}) scale(${event.transform.k})`);
       });
@@ -614,6 +780,32 @@ export function SkillRadar({
           </div>
         </CardHeader>
         <CardContent>
+          <div className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: "rgba(142, 92, 246, 0.54)" }} />
+              <span>sub-section</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: "rgba(255, 163, 181, 0.92)" }} />
+              <span>practice</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: "rgba(107,133,145,0.75)" }} />
+              <span>undecided</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: "rgba(239, 68, 68, 0.88)" }} />
+              <span>incomplete</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: "rgba(245, 158, 11, 0.88)" }} />
+              <span>working/comfortable</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: "rgba(34, 197, 94, 0.86)" }} />
+              <span>complete/confident</span>
+            </div>
+          </div>
           <div ref={containerRef} className="relative w-full">
             <svg ref={svgRef} className="w-full rounded-lg border bg-white dark:bg-card" />
           </div>

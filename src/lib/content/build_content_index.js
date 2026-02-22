@@ -74,16 +74,21 @@ function readSkills(packId, skillsDir) {
 
     const description = extractDescriptionFromMdxBody(parsed.content || "");
 
+    const substrandMatch = String(parsed.content || "").match(/\*\*Substrand:\*\*\s*([^\n]+)/i);
+    const substrand = substrandMatch ? String(substrandMatch[1]).trim() : undefined;
+
     skills.push({
       id,
       packId,
       name,
       title: d.title ? String(d.title) : undefined,
       description,
+      substrand,
       quadrant,
       ring,
       categoryId: String(d.categoryId || slugify(quadrant)),
       levelId: String(d.levelId || slugify(ring)),
+      tierId: d.tierId ? String(d.tierId) : d.difficultyTierId ? String(d.difficultyTierId) : undefined,
       order: typeof d.order === "number" ? d.order : d.order ? Number(d.order) : undefined,
       status: d.status ? String(d.status) : undefined,
       requiresSkills: Array.isArray(d.requiresSkills) ? d.requiresSkills.map(String) : [],
@@ -277,7 +282,8 @@ function buildContentIndex(repoRoot) {
     packs[packId] = { manifest, skills, skillsById, units, unitsById, skillLinks };
   }
 
-  const envPack = process.env.RAFT_PACK;
+  // Brand rename: prefer REVTREE_PACK, but keep RAFT_PACK for backwards compatibility.
+  const envPack = process.env.REVTREE_PACK || process.env.RAFT_PACK;
   const defaultPackId = envPack && packs[envPack] ? envPack : "govuk-prototyping";
 
   return {

@@ -11,8 +11,8 @@ export async function generateMetadata(props: {
   const packName = pack?.manifest?.name ?? packId;
 
   return {
-    title: `RAFT — ${packName}`,
-    description: pack?.manifest?.description ?? `RAFT training pack: ${packName}`,
+    title: `RevTree — ${packName}`,
+    description: pack?.manifest?.description ?? `RevTree training pack: ${packName}`,
   };
 }
 

@@ -1,0 +1,49 @@
+{
+  "id": "gcse-english",
+  "name": "AQA GCSE English \u2014 Revision Pack",
+  "description": "AQA GCSE English revision pack (skills + lessons). Built from your revision resources.",
+  "categories": [
+    {
+      "id": "lang-paper-1",
+      "title": "Language Paper 1"
+    },
+    {
+      "id": "lang-paper-2",
+      "title": "Language Paper 2"
+    },
+    {
+      "id": "lit-paper-1",
+      "title": "Literature Paper 1"
+    },
+    {
+      "id": "lit-paper-2",
+      "title": "Literature Paper 2"
+    },
+    {
+      "id": "macbeth",
+      "title": "Macbeth"
+    },
+    {
+      "id": "a-christmas-carol",
+      "title": "A Christmas Carol"
+    },
+    {
+      "id": "an-inspector-calls",
+      "title": "An Inspector Calls"
+    },
+    {
+      "id": "poetry-love-relationships",
+      "title": "Poetry \u2014 Love & Relationships"
+    }
+  ],
+  "levels": [
+    {
+      "id": "skills",
+      "title": "Skills"
+    },
+    {
+      "id": "exam",
+      "title": "Exam"
+    }
+  ]
+}
