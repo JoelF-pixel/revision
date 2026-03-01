@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { GoogleSignInLink } from "@/components/GoogleSignInLink";
+import { getSignInPath } from "@/lib/auth-provider";
 
 type Skill = {
   id: string;
@@ -121,7 +122,7 @@ export function SkillPlanCard({
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border p-3">
             <div className="text-sm text-muted-foreground">{error}</div>
             <GoogleSignInLink
-              href={`/api/auth/signin/google?callbackUrl=${encodeURIComponent(`/p/${packId}/plan`)}`}
+              href={getSignInPath(`/p/${packId}/plan`)}
               className="h-9"
             />
           </div>

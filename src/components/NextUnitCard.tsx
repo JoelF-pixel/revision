@@ -13,6 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { GoogleSignInLink } from "@/components/GoogleSignInLink";
+import { getSignInPath } from "@/lib/auth-provider";
 
 type Status = "NOT_STARTED" | "IN_PROGRESS" | "COMPLETE";
 
@@ -213,7 +214,7 @@ export function NextUnitCard({
           {error ? (
             <div className="mt-2">
               <GoogleSignInLink
-                href={`/api/auth/signin/google?callbackUrl=${encodeURIComponent(`/p/${packId}`)}`}
+                href={getSignInPath(`/p/${packId}`)}
                 className="h-8 px-3 text-xs"
               />
             </div>
