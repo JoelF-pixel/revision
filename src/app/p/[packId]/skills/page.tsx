@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { getSignInPath } from "@/lib/auth-provider";
 import { prisma } from "@/lib/db";
 
 import contentIndex from "../../../../../content/generated/content-index.json";
@@ -188,7 +189,7 @@ export default async function PackSkillsPage(props: {
 
             {!user ? (
               <GoogleSignInLink
-                href={`/api/auth/signin/google?callbackUrl=${encodeURIComponent(`/p/${packId}/skills`)}`}
+                href={getSignInPath(`/p/${packId}/skills`)}
                 className="h-9 shrink-0"
               />
             ) : null}

@@ -11,6 +11,7 @@ import contentIndex from "../../content/generated/content-index.json";
 import { AuthButton } from "@/components/AuthButton";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { GoogleBrandingLink } from "@/components/GoogleSignInCommon";
+import { getAuthProviderId } from "@/lib/auth-provider";
 
 import { Settings } from "lucide-react";
 
@@ -53,6 +54,7 @@ export function TopNav() {
   const isAuthed = Boolean((session as any)?.user);
 
   const [packId, setPackId] = useState<string>("govuk-prototyping");
+  const showGoogleBranding = getAuthProviderId() === "google";
 
   const section = useMemo(() => getSectionFromPathname(pathname), [pathname]);
 
@@ -181,7 +183,7 @@ export function TopNav() {
                   <ThemeToggle />
                 </div>
 
-                <GoogleBrandingLink />
+                {showGoogleBranding ? <GoogleBrandingLink /> : null}
 
                 <div className="pt-2">
                   <AuthButton />
@@ -238,7 +240,7 @@ export function TopNav() {
                 </div>
 
                 <div className="mt-4">
-                  <GoogleBrandingLink />
+                  {showGoogleBranding ? <GoogleBrandingLink /> : null}
                 </div>
 
                 <div className="mt-2">

@@ -63,10 +63,22 @@ Minimum required variables depend on what you enable:
 - `AUTH_SECRET=...` (generate: `openssl rand -hex 32`)
 - `NEXTAUTH_URL=http://localhost:3099`
 
-**Google OAuth (optional)**
+**OAuth provider selection**
+- `AUTH_PROVIDER=google|microsoft|mock` (default: `google`)
+- `NEXT_PUBLIC_AUTH_PROVIDER=google|microsoft|mock` (keep this aligned with `AUTH_PROVIDER`)
+- `ALLOWED_EMAIL_DOMAIN=your-school-domain.ac.uk` (optional allowlist for all providers)
+
+**Google OAuth (when `AUTH_PROVIDER=google`)**
 - `GOOGLE_CLIENT_ID=...`
 - `GOOGLE_CLIENT_SECRET=...`
-- `GOOGLE_WORKSPACE_DOMAIN=hippodigital.co.uk` (optional allowlist)
+
+**Microsoft OAuth (when `AUTH_PROVIDER=microsoft`)**
+- `AZURE_AD_CLIENT_ID=...`
+- `AZURE_AD_CLIENT_SECRET=...`
+- `AZURE_AD_TENANT_ID=...` (or `common`)
+
+**Mock auth (when `AUTH_PROVIDER=mock`)**
+- No OAuth app required. Uses a local credentials form for dev/testing.
 
 > Security: **Never commit real secrets.** `.env*` is ignored by git.
 

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { getSignInPath } from "@/lib/auth-provider";
 
 import contentIndex from "../../../../content/generated/content-index.json";
 
@@ -68,7 +69,7 @@ export default async function PackHomePage(props: {
         <CardContent className="flex flex-wrap items-center gap-3">
           {!isAuthed ? (
             <GoogleSignInLink
-              href={`/api/auth/signin/google?callbackUrl=${encodeURIComponent(`/p/${packId}`)}`}
+              href={getSignInPath(`/p/${packId}`)}
               className="h-9"
             />
           ) : hasPlan ? (

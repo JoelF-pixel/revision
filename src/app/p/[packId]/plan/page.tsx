@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { getSignInPath } from "@/lib/auth-provider";
 
 import contentIndex from "../../../../../content/generated/content-index.json";
 
@@ -23,7 +24,7 @@ export default async function PackPlanPage(props: {
   // Behind login: plan depends on stored ratings/progress.
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) {
-    redirect(`/api/auth/signin/google?callbackUrl=${encodeURIComponent(`/p/${packId}/plan`)}`);
+    redirect(getSignInPath(`/p/${packId}/plan`));
   }
 
   return (
