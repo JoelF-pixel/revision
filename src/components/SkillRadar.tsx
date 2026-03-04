@@ -63,12 +63,14 @@ export function SkillRadar({
   unitsById,
   manifest,
   skillLinks,
+  searchQuery,
 }: {
   packId: string;
   skills: Skill[];
   unitsById: Record<string, Unit>;
   manifest: Manifest;
   skillLinks: SkillLink[];
+  searchQuery?: string;
 }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -80,6 +82,7 @@ export function SkillRadar({
   const [showNumbers, setShowNumbers] = useState(false);
   const [showLinks, setShowLinks] = useState(false);
   const [focusSelection, setFocusSelection] = useState(false);
+  const q = (searchQuery || "").trim().toLowerCase();
 
   // Fetch ratings (pack-scoped)
   useEffect(() => {
@@ -167,6 +170,19 @@ export function SkillRadar({
     return { prereqIds: prereq, dependentIds: dep, connectedIds: connected };
   }, [selectedId, skillLinks]);
 
+  const matchedIds = useMemo(() => {
+    if (!q) return new Set<string>();
+    const out = new Set<string>();
+    for (const s of orderedSkills) {
+      const text = [s.id, s.name, s.description, s.categoryId, s.levelId, ...(s.kitTags || [])]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+      if (text.includes(q)) out.add(String(s.id));
+    }
+    return out;
+  }, [orderedSkills, q]);
+
   useEffect(() => {
     if (!svgRef.current || !containerRef.current) return;
 
@@ -185,6 +201,7 @@ export function SkillRadar({
     const cx = width / 2;
     const cy = height / 2;
     const margin = 50;
+    const outerDotPadding = 18;
     const rMax = Math.min(width, height) / 2 - margin;
 
     const levels = manifest.levels.length ? manifest.levels : [{ id: "working", title: "Working" }];
@@ -269,6 +286,7 @@ export function SkillRadar({
         .attr("stroke", "var(--radar-slice-stroke)")
         .attr("stroke-width", 1);
 
+      // Show only top-level spec labels (eg 4.1 Energy), outside the radar.
       const labelAngle = (a0 + a1) / 2;
       const labelR = rMax + 18;
       const lx = Math.cos(labelAngle - Math.PI / 2) * labelR;
@@ -283,6 +301,7 @@ export function SkillRadar({
         .attr("font-size", 12)
         .attr("fill", "var(--radar-label)")
         .text(categories[i].title);
+
     }
 
     // Rings + level labels
@@ -367,6 +386,7 @@ export function SkillRadar({
 
       let ringInner = radii[li] ?? 0;
       let ringOuter = radii[li + 1] ?? rMax;
+      if (ringOuter >= rMax) ringOuter = rMax - outerDotPadding;
 
       // English pack: map Skills-tier dots into sub-rings within the Skills ring.
       if (isEnglish && String(s.levelId || "") === skillsLevelId) {
@@ -388,17 +408,30 @@ export function SkillRadar({
       const n = (groupCounters.get(key) ?? 0) + 1;
       groupCounters.set(key, n);
 
-      // Halton gives a more even spread than naive RNG.
-      const u = 0.05 + 0.9 * halton(n, 2); // angle within slice/span
-      const v = 0.05 + 0.9 * halton(n, 3); // radius within ring
+      const id = String(s.id || "");
+      const isTopicHub = /^aqa-(phys|chem)-4-\d+$/.test(id);
 
-      // Angle in our [0..2π) system, with wrap handled.
-      let angle = a0 + span * u;
-      if (angle >= TAU) angle -= TAU;
+      let angle: number;
+      let radius: number;
 
-      // Uniform-in-area radius distribution inside an annulus
-      const r2 = ringInner * ringInner + v * (ringOuter * ringOuter - ringInner * ringInner);
-      const radius = Math.sqrt(r2);
+      if (isTopicHub) {
+        // Keep top-level topic hubs (eg 4.1, 4.2, ...) centred in their sector.
+        angle = a0 + span * 0.5;
+        if (angle >= TAU) angle -= TAU;
+        radius = (ringInner + ringOuter) / 2;
+      } else {
+        // Halton gives a more even spread than naive RNG.
+        const u = 0.05 + 0.9 * halton(n, 2); // angle within slice/span
+        const v = 0.05 + 0.9 * halton(n, 3); // radius within ring
+
+        // Angle in our [0..2π) system, with wrap handled.
+        angle = a0 + span * u;
+        if (angle >= TAU) angle -= TAU;
+
+        // Uniform-in-area radius distribution inside an annulus
+        const r2 = ringInner * ringInner + v * (ringOuter * ringOuter - ringInner * ringInner);
+        radius = Math.sqrt(r2);
+      }
 
       const x0 = Math.cos(angle - Math.PI / 2) * radius;
       const y0 = Math.sin(angle - Math.PI / 2) * radius;
@@ -463,9 +496,11 @@ export function SkillRadar({
         "x",
         d3.forceX((d: any) => d.x0).strength((d: any) => {
           const id = String(d.id || "");
+          const isTopicHub = /^aqa-(phys|chem)-4-\d+$/.test(id);
           const isHub =
             (packId === "gcse-maths" && id.startsWith("maths-subsection-")) ||
             (packId === "gcse-chemistry-higher" && /^aqa-chem-4-\d+-\d+$/.test(id));
+          if (isTopicHub) return 0.16;
           return isHub ? 0.035 : 0.08;
         }),
       )
@@ -473,9 +508,11 @@ export function SkillRadar({
         "y",
         d3.forceY((d: any) => d.y0).strength((d: any) => {
           const id = String(d.id || "");
+          const isTopicHub = /^aqa-(phys|chem)-4-\d+$/.test(id);
           const isHub =
             (packId === "gcse-maths" && id.startsWith("maths-subsection-")) ||
             (packId === "gcse-chemistry-higher" && /^aqa-chem-4-\d+-\d+$/.test(id));
+          if (isTopicHub) return 0.16;
           return isHub ? 0.035 : 0.08;
         }),
       );
@@ -496,7 +533,7 @@ export function SkillRadar({
         const aClamped = (d.a0 + deltaClamped) % TAU;
 
         const rr = Math.sqrt(d.x * d.x + d.y * d.y);
-        const rClamped = Math.min(Math.max(rr, d.ringInner + 6), d.ringOuter - 6);
+        const rClamped = Math.min(Math.max(rr, d.ringInner + 6), d.ringOuter - 10);
 
         d.x = Math.cos(aClamped - Math.PI / 2) * rClamped;
         d.y = Math.sin(aClamped - Math.PI / 2) * rClamped;
@@ -529,9 +566,11 @@ export function SkillRadar({
 
     const linkG = g.append("g").attr("opacity", showLinks ? 1 : 0);
 
-    const linksToDraw = focusSelection && selectedId
-      ? (skillLinks || []).filter((e) => connectedIdsLocal.has(e.from) && connectedIdsLocal.has(e.to))
-      : (skillLinks || []);
+    const linksToDraw = q
+      ? (skillLinks || []).filter((e) => matchedIds.has(e.from) || matchedIds.has(e.to))
+      : focusSelection && selectedId
+        ? (skillLinks || []).filter((e) => connectedIdsLocal.has(e.from) && connectedIdsLocal.has(e.to))
+        : (skillLinks || []);
 
     // Draw links first (under nodes)
     linksToDraw
@@ -559,7 +598,7 @@ export function SkillRadar({
           .attr("stroke", stroke)
           .attr("stroke-linecap", "round")
           .attr("stroke-width", isConnectedEdge ? 3 : 1.5)
-          .attr("opacity", !selectedId ? 1 : isConnectedEdge ? 1 : 0.25);
+          .attr("opacity", q ? (matchedIds.has(e.from) && matchedIds.has(e.to) ? 0.95 : 0.35) : !selectedId ? 1 : isConnectedEdge ? 1 : 0.25);
       });
 
     const nodeG = g.append("g");
@@ -606,10 +645,18 @@ export function SkillRadar({
         return colorByRating(has ? ratings[d.id] : undefined);
       })
       .attr("opacity", (d: any) => {
+        if (q) {
+          if (matchedIds.has(d.id)) return 1;
+          const linkedToMatch = (skillLinks || []).some(
+            (e) => (e.from === d.id && matchedIds.has(e.to)) || (e.to === d.id && matchedIds.has(e.from)),
+          );
+          if (linkedToMatch) return 0.5;
+          if (isImportantHub(d.id)) return 0.35;
+          return 0.12;
+        }
         if (!selectedId) return 1;
         if (!focusSelection) return 1;
         if (connectedIdsLocal.has(d.id)) return 1;
-        // Keep important hubs faintly visible even when focusing.
         if (isImportantHub(d.id)) return 0.55;
         return 0.15;
       })
@@ -681,7 +728,6 @@ export function SkillRadar({
         .text((d: any) => d.name);
     }
 
-    // (Important hub labels removed to keep the tree uncluttered.)
 
     // Zoom/pan
     const zoom = d3
@@ -723,7 +769,7 @@ export function SkillRadar({
       tooltip.remove();
       svg.on(".zoom", null);
     };
-  }, [orderedSkills, manifest, ratings, selectedId, showLabels, showNumbers, showLinks, focusSelection, skillLinks]);
+  }, [orderedSkills, manifest, ratings, selectedId, showLabels, showNumbers, showLinks, focusSelection, skillLinks, q, matchedIds]);
 
   const showSkillPanel = Boolean(selectedSkill);
 
@@ -736,7 +782,7 @@ export function SkillRadar({
               <h1 className="text-2xl">Skills tree</h1>
               </CardTitle>
             <CardDescription>
-              Visual map of skills by category (slice) and level (ring). Click a dot to inspect. {loadingRatings ? "(loading ratings…)" : ""}
+              Visual map of skills by category (slice) and level (ring). Click a dot to inspect. {q ? `Search: "${searchQuery}". ` : ""}{loadingRatings ? "(loading ratings…)" : ""}
             </CardDescription>
           </div>
           <div className="flex items-center gap-3 text-sm">

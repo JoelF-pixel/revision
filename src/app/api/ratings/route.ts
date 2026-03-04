@@ -9,6 +9,11 @@ const UpsertSchema = z.object({
   rating: z.number().int().min(0).max(3),
 });
 
+const DeleteSchema = z.object({
+  packId: z.string().min(1),
+  skillId: z.string().min(1),
+});
+
 export async function GET(req: Request) {
   const session = await getServerSession(authOptions);
   const email = session?.user?.email;
@@ -59,4 +64,30 @@ export async function POST(req: Request) {
   });
 
   return Response.json({ ok: true, saved });
+}
+
+export async function DELETE(req: Request) {
+  const session = await getServerSession(authOptions);
+  const email = session?.user?.email;
+  if (!email) return new Response("Unauthorized", { status: 401 });
+
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (!user) return new Response("Unauthorized", { status: 401 });
+
+  const json = await req.json().catch(() => null);
+  const parsed = DeleteSchema.safeParse(json);
+  if (!parsed.success) {
+    return Response.json(
+      { error: "Invalid payload", issues: parsed.error.issues },
+      { status: 400 },
+    );
+  }
+
+  const { packId, skillId } = parsed.data;
+
+  await prisma.skillRating.deleteMany({
+    where: { userId: user.id, packId, skillId },
+  });
+
+  return Response.json({ ok: true });
 }

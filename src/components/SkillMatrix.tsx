@@ -15,6 +15,8 @@ type Skill = {
   categoryId?: string;
   levelId?: string;
   order?: number;
+  prereqs?: string[];
+  kitTags?: string[];
 };
 
 type Manifest = {
@@ -47,9 +49,12 @@ export function SkillMatrix({
   const [error, setError] = useState<string | null>(null);
   const [isAuthed, setIsAuthed] = useState(true);
 
-  const [scope, setScope] = useState<"plan" | "all">("plan");
+  const [scope, setScope] = useState<"plan" | "all">("all");
   const [viewMode, setViewMode] = useState<"quadrants" | "levels" | "number">("quadrants");
   const [onlyRemaining, setOnlyRemaining] = useState(false);
+  const [ragFilter, setRagFilter] = useState<"all" | "unrated" | "red" | "amber" | "green">("all");
+  const [bulkSaving, setBulkSaving] = useState<number | null>(null);
+  const [bulkClearing, setBulkClearing] = useState(false);
 
   // Default target: reach Working (1) everywhere
   const target = 1;
@@ -70,6 +75,31 @@ export function SkillMatrix({
 
   const rankLevel = useMemo(() => new Map(levelOrder.map((id, i) => [id, i])), [levelOrder]);
   const rankCategory = useMemo(() => new Map(categoryOrder.map((id, i) => [id, i])), [categoryOrder]);
+
+
+  const childrenByHubId = useMemo(() => {
+    const map = new Map<string, string[]>();
+    for (const sk of skills) {
+      const childId = String(sk.id);
+      const prereqs = Array.isArray(sk.prereqs) ? sk.prereqs.map(String) : [];
+      for (const hubId of prereqs) {
+        if (!map.has(hubId)) map.set(hubId, []);
+        map.get(hubId)!.push(childId);
+      }
+    }
+    return map;
+  }, [skills]);
+
+  function isPurpleHub(skillId: string): boolean {
+    const id = String(skillId);
+    if (id.startsWith("maths-subsection-")) return true;
+    if (/^aqa-(phys|chem)-4-\d+-\d+$/.test(id)) return true;
+    return false;
+  }
+
+  function isBulkHub(skillId: string): boolean {
+    return isPurpleHub(skillId);
+  }
 
   useEffect(() => {
     let cancelled = false;
@@ -106,17 +136,116 @@ export function SkillMatrix({
     setSavingId(skillId);
     setError(null);
 
-    // optimistic
-    setRatings((r) => ({ ...r, [skillId]: nextRating }));
+    const targets = isBulkHub(skillId)
+      ? [skillId, ...(childrenByHubId.get(String(skillId)) || [])]
+      : [skillId];
 
-    const res = await fetch("/api/ratings", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ packId, skillId, rating: nextRating }),
+    // optimistic
+    setRatings((r) => {
+      const next = { ...r };
+      for (const id of targets) next[String(id)] = nextRating;
+      return next;
     });
 
-    if (!res.ok) setError("Failed to save rating (are you signed in?).");
+    let failed = false;
+    for (const id of targets) {
+      const res = await fetch("/api/ratings", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ packId, skillId: id, rating: nextRating }),
+      });
+      if (!res.ok) failed = true;
+    }
+
+    if (failed) setError("Failed to save some ratings (are you signed in?).");
     setSavingId(null);
+  }
+
+  async function clearRating(skillId: string) {
+    if (!isAuthed) return;
+
+    setSavingId(skillId);
+    setError(null);
+
+    const targets = isBulkHub(skillId)
+      ? [skillId, ...(childrenByHubId.get(String(skillId)) || [])]
+      : [skillId];
+
+    // optimistic: remove keys so they render as unrated/grey
+    setRatings((r) => {
+      const next = { ...r };
+      for (const id of targets) delete next[String(id)];
+      return next;
+    });
+
+    let failed = false;
+    for (const id of targets) {
+      const res = await fetch("/api/ratings", {
+        method: "DELETE",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ packId, skillId: id }),
+      });
+      if (!res.ok) failed = true;
+    }
+
+    if (failed) setError("Failed to clear some ratings (are you signed in?).");
+    setSavingId(null);
+  }
+
+
+  function ragOf(skillId: string): "unrated" | "red" | "amber" | "green" {
+    const has = Object.prototype.hasOwnProperty.call(ratings, skillId);
+    if (!has) return "unrated";
+    const v = ratings[skillId] ?? 0;
+    if (v <= 0) return "red";
+    if (v === 1) return "amber";
+    return "green";
+  }
+
+  async function applyBulkVisible(rating: number, visibleSkillIds: string[]) {
+    if (!isAuthed || !visibleSkillIds.length) return;
+    setBulkSaving(rating);
+    setError(null);
+
+    setRatings((prev) => {
+      const next = { ...prev };
+      for (const id of visibleSkillIds) next[id] = rating;
+      return next;
+    });
+
+    for (const skillId of visibleSkillIds) {
+      await fetch("/api/ratings", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ packId, skillId, rating }),
+      });
+    }
+
+    setBulkSaving(null);
+  }
+
+
+
+  async function applyBulkUnrated(visibleSkillIds: string[]) {
+    if (!isAuthed || !visibleSkillIds.length) return;
+    setBulkClearing(true);
+    setError(null);
+
+    setRatings((prev) => {
+      const next = { ...prev };
+      for (const id of visibleSkillIds) delete next[id];
+      return next;
+    });
+
+    for (const skillId of visibleSkillIds) {
+      await fetch("/api/ratings", {
+        method: "DELETE",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ packId, skillId }),
+      });
+    }
+
+    setBulkClearing(false);
   }
 
   const scopedSkills = useMemo(() => {
@@ -128,12 +257,20 @@ export function SkillMatrix({
       ? filtered.filter((s) => (String(s.levelId || "").trim() || workingLevelId) === workingLevelId)
       : filtered.slice();
 
+    let next = base;
+
     if (scope === "plan" && onlyRemaining) {
-      return base.filter((s) => (ratings[s.id] ?? 0) < target);
+      next = next.filter((s) => (ratings[s.id] ?? 0) < target);
     }
 
-    return base;
-  }, [skills, categoryIdFilter, scope, onlyRemaining, ratings, target, workingLevelId]);
+    if (ragFilter !== "all") {
+      next = next.filter((s) => ragOf(String(s.id)) === ragFilter);
+    }
+
+    return next;
+  }, [skills, categoryIdFilter, scope, onlyRemaining, ratings, target, workingLevelId, ragFilter]);
+
+  const visibleSkillIds = useMemo(() => scopedSkills.map((s) => String(s.id)), [scopedSkills]);
 
   const flatByNumber = useMemo(() => {
     const list = scopedSkills.slice();
@@ -248,15 +385,50 @@ export function SkillMatrix({
         <div className="text-sm text-muted-foreground">{scopedSkills.length} skills</div>
       </div>
 
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-xs text-muted-foreground mr-1">Filter:</span>
+        {([
+          ["all", "All"],
+          ["unrated", "Unrated"],
+          ["red", "Red"],
+          ["amber", "Amber"],
+          ["green", "Green"],
+        ] as const).map(([key, label]) => (
+          <Button
+            key={key}
+            type="button"
+            size="sm"
+            variant={ragFilter === key ? "secondary" : "outline"}
+            className="h-7 rounded-full px-3 text-xs"
+            onClick={() => setRagFilter(key)}
+          >
+            {label}
+          </Button>
+        ))}
+
+        {isAuthed ? (
+          <>
+            
+            <span className="mx-1 text-xs text-muted-foreground">| Set visible:</span>
+            <Button type="button" size="sm" variant="outline" className="h-7 rounded-full px-3 text-xs" disabled={bulkSaving !== null || bulkClearing} onClick={() => applyBulkUnrated(visibleSkillIds)}>{bulkClearing?"Clearing…":"Grey"}</Button>
+            <Button type="button" size="sm" variant="outline" className="h-7 rounded-full px-3 text-xs" disabled={bulkSaving !== null || bulkClearing} onClick={() => applyBulkVisible(0, visibleSkillIds)}>{bulkSaving===0?"Saving…":"Red"}</Button>
+            <Button type="button" size="sm" variant="outline" className="h-7 rounded-full px-3 text-xs" disabled={bulkSaving !== null || bulkClearing} onClick={() => applyBulkVisible(1, visibleSkillIds)}>{bulkSaving===1?"Saving…":"Amber"}</Button>
+            <Button type="button" size="sm" variant="outline" className="h-7 rounded-full px-3 text-xs" disabled={bulkSaving !== null || bulkClearing} onClick={() => applyBulkVisible(2, visibleSkillIds)}>{bulkSaving===2?"Saving…":"Green"}</Button>
+          </>
+        ) : null}
+      </div>
+
       {viewMode === "number" ? (
         <div className="space-y-2">
           {flatByNumber.map((s) => {
-            const value = ratings[s.id] ?? 0;
+            const hasRating = Object.prototype.hasOwnProperty.call(ratings, s.id);
+            const value = hasRating ? (ratings[s.id] ?? 0) : -1;
+            const isHubRow = isPurpleHub(String(s.id));
             const catLabel = categoryTitleById[s.categoryId ?? ""] ?? s.quadrant;
             const lvlLabel = levelTitleById[s.levelId ?? ""] ?? s.ring;
 
             return (
-              <div key={s.id} className="flex flex-wrap items-center justify-between gap-3 rounded-lg border p-3">
+              <div key={s.id} className={"flex flex-wrap items-center justify-between gap-3 rounded-lg border p-3 " + (isHubRow ? "border-violet-300 border-l-4 border-l-violet-400 bg-violet-100/55 dark:bg-violet-500/16 ring-1 ring-violet-300/45 dark:ring-violet-300/30" : "")}>
                 <div className="min-w-[240px]">
                   <Link className="font-medium text-primary hover:underline" href={`/p/${packId}/skills/${s.id}`}>
                     {s.name}
@@ -272,17 +444,18 @@ export function SkillMatrix({
                     <>
                       <Select
                         value={String(value)}
-                        onValueChange={(v) => save(s.id, clampRating(v))}
+                        onValueChange={(v) => { if (v === "-1") { clearRating(s.id); return; } save(s.id, clampRating(v)); }}
                         disabled={savingId === s.id || !!error || loading}
                       >
                         <SelectTrigger className="w-[190px]">
                           <SelectValue placeholder="Set level" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="0">0 — Not started</SelectItem>
-                          <SelectItem value="1">1 — Working</SelectItem>
-                          <SelectItem value="2">2 — Practitioner</SelectItem>
-                          <SelectItem value="3">3 — Expert</SelectItem>
+                          <SelectItem value="-1">— Unrated</SelectItem>
+                          <SelectItem value="0">0 — Red</SelectItem>
+                          <SelectItem value="1">1 — Amber</SelectItem>
+                          <SelectItem value="2">2 — Green</SelectItem>
+                          <SelectItem value="3">3 — Green+</SelectItem>
                         </SelectContent>
                       </Select>
                       {savingId === s.id ? <span className="text-xs text-muted-foreground">Saving…</span> : null}
@@ -318,9 +491,11 @@ export function SkillMatrix({
                       <h3 className="text-base font-medium">{categoryTitle}</h3>
                       <div className="space-y-2">
                         {list.map((s) => {
-                          const value = ratings[s.id] ?? 0;
+                          const hasRating = Object.prototype.hasOwnProperty.call(ratings, s.id);
+                          const value = hasRating ? (ratings[s.id] ?? 0) : -1;
+                          const isHubRow = isPurpleHub(String(s.id));
                           return (
-                            <div key={s.id} className="flex flex-wrap items-center justify-between gap-3 rounded-lg border p-3">
+                            <div key={s.id} className={"flex flex-wrap items-center justify-between gap-3 rounded-lg border p-3 " + (isHubRow ? "border-violet-300 border-l-4 border-l-violet-400 bg-violet-100/55 dark:bg-violet-500/16 ring-1 ring-violet-300/45 dark:ring-violet-300/30" : "")}>
                               <div className="min-w-[240px]">
                                 <Link className="font-medium text-primary hover:underline" href={`/p/${packId}/skills/${s.id}`}>
                                   {s.name}
@@ -331,17 +506,17 @@ export function SkillMatrix({
                                   <>
                                     <Select
                                       value={String(value)}
-                                      onValueChange={(v) => save(s.id, clampRating(v))}
+                                      onValueChange={(v) => { if (v === "-1") { clearRating(s.id); return; } save(s.id, clampRating(v)); }}
                                       disabled={savingId === s.id}
                                     >
                                       <SelectTrigger className="w-[190px]">
                                         <SelectValue placeholder="Set level" />
                                       </SelectTrigger>
                                       <SelectContent>
-                                        <SelectItem value="0">0 — Not started</SelectItem>
-                                        <SelectItem value="1">1 — Working</SelectItem>
-                                        <SelectItem value="2">2 — Practitioner</SelectItem>
-                                        <SelectItem value="3">3 — Expert</SelectItem>
+                                        <SelectItem value="0">0 — Red</SelectItem>
+                                        <SelectItem value="1">1 — Amber</SelectItem>
+                                        <SelectItem value="2">2 — Green</SelectItem>
+                                        <SelectItem value="3">3 — Green+</SelectItem>
                                       </SelectContent>
                                     </Select>
                                     {savingId === s.id ? <span className="text-xs text-muted-foreground">Saving…</span> : null}
@@ -386,7 +561,9 @@ export function SkillMatrix({
                       ) : null}
 
                       {list.map((s) => {
-                        const value = ratings[s.id] ?? 0;
+                        const hasRating = Object.prototype.hasOwnProperty.call(ratings, s.id);
+                        const value = hasRating ? (ratings[s.id] ?? 0) : -1;
+                        const isHubRow = isPurpleHub(String(s.id));
                         const needsWork = scope === "plan" && value < target;
 
                         return (
@@ -394,13 +571,15 @@ export function SkillMatrix({
                             key={s.id}
                             className={
                               "flex flex-wrap items-center justify-between gap-3 rounded-lg border p-3 " +
-                              (needsWork ? "bg-muted/50" : "")
+                              (needsWork ? "bg-muted/50 " : "") +
+                              (isHubRow ? "border-violet-300 border-l-4 border-l-violet-400 bg-violet-100/55 dark:bg-violet-500/16 ring-1 ring-violet-300/45 dark:ring-violet-300/30" : "")
                             }
                           >
                             <div className="min-w-[240px]">
                               <Link className="font-medium text-primary hover:underline" href={`/p/${packId}/skills/${s.id}`}>
                                 {s.name}
                               </Link>
+                              
                             </div>
 
                             <div className="flex items-center gap-2">
@@ -408,17 +587,17 @@ export function SkillMatrix({
                                 <>
                                   <Select
                                     value={String(value)}
-                                    onValueChange={(v) => save(s.id, clampRating(v))}
+                                    onValueChange={(v) => { if (v === "-1") { clearRating(s.id); return; } save(s.id, clampRating(v)); }}
                                     disabled={savingId === s.id}
                                   >
                                     <SelectTrigger className="w-[190px]">
                                       <SelectValue placeholder="Set level" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                      <SelectItem value="0">0 — Not started</SelectItem>
-                                      <SelectItem value="1">1 — Working</SelectItem>
-                                      <SelectItem value="2">2 — Practitioner</SelectItem>
-                                      <SelectItem value="3">3 — Expert</SelectItem>
+                                      <SelectItem value="0">0 — Red</SelectItem>
+                                      <SelectItem value="1">1 — Amber</SelectItem>
+                                      <SelectItem value="2">2 — Green</SelectItem>
+                                      <SelectItem value="3">3 — Green+</SelectItem>
                                     </SelectContent>
                                   </Select>
                                   {savingId === s.id ? <span className="text-xs text-muted-foreground">Saving…</span> : null}
@@ -462,9 +641,11 @@ export function SkillMatrix({
                           <div className="text-xs font-medium text-muted-foreground">{levelTitle}</div>
                         ) : null}
                         {list.map((s) => {
-                          const value = ratings[s.id] ?? 0;
+                          const hasRating = Object.prototype.hasOwnProperty.call(ratings, s.id);
+                          const value = hasRating ? (ratings[s.id] ?? 0) : -1;
+                          const isHubRow = isPurpleHub(String(s.id));
                           return (
-                            <div key={s.id} className="flex flex-wrap items-center justify-between gap-3 rounded-lg border p-3">
+                            <div key={s.id} className={"flex flex-wrap items-center justify-between gap-3 rounded-lg border p-3 " + (isHubRow ? "border-violet-300 border-l-4 border-l-violet-400 bg-violet-100/55 dark:bg-violet-500/16 ring-1 ring-violet-300/45 dark:ring-violet-300/30" : "")}>
                               <div className="min-w-[240px]">
                                 <Link className="font-medium text-primary hover:underline" href={`/p/${packId}/skills/${s.id}`}>
                                   {s.name}
@@ -473,17 +654,17 @@ export function SkillMatrix({
                               {isAuthed ? (
                                 <Select
                                   value={String(value)}
-                                  onValueChange={(v) => save(s.id, clampRating(v))}
+                                  onValueChange={(v) => { if (v === "-1") { clearRating(s.id); return; } save(s.id, clampRating(v)); }}
                                   disabled={savingId === s.id}
                                 >
                                   <SelectTrigger className="w-[190px]">
                                     <SelectValue placeholder="Set level" />
                                   </SelectTrigger>
                                   <SelectContent>
-                                    <SelectItem value="0">0 — Not started</SelectItem>
-                                    <SelectItem value="1">1 — Working</SelectItem>
-                                    <SelectItem value="2">2 — Practitioner</SelectItem>
-                                    <SelectItem value="3">3 — Expert</SelectItem>
+                                    <SelectItem value="0">0 — Red</SelectItem>
+                                    <SelectItem value="1">1 — Amber</SelectItem>
+                                    <SelectItem value="2">2 — Green</SelectItem>
+                                    <SelectItem value="3">3 — Green+</SelectItem>
                                   </SelectContent>
                                 </Select>
                               ) : null}
