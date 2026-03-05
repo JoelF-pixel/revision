@@ -284,7 +284,9 @@ function buildContentIndex(repoRoot) {
 
   // Brand rename: prefer REVTREE_PACK, but keep RAFT_PACK for backwards compatibility.
   const envPack = process.env.REVTREE_PACK || process.env.RAFT_PACK;
-  const defaultPackId = envPack && packs[envPack] ? envPack : "govuk-prototyping";
+  const indexedPackIds = Object.keys(packs);
+  const fallbackPackId = packs["govuk-prototyping"] ? "govuk-prototyping" : indexedPackIds[0] || "";
+  const defaultPackId = envPack && packs[envPack] ? envPack : fallbackPackId;
 
   return {
     generatedAt: new Date().toISOString(),

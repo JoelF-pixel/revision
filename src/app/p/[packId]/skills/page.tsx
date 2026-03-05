@@ -9,7 +9,7 @@ import { prisma } from "@/lib/db";
 import contentIndex from "../../../../../content/generated/content-index.json";
 
 import { SkillRadar } from "@/components/SkillRadar";
-import { AssessmentWizard } from "@/components/AssessmentWizard";
+import { SkillMatrix } from "@/components/SkillMatrix";
 import { GoogleSignInLink } from "@/components/GoogleSignInLink";
 import { SkillDetailPanel } from "@/components/SkillDetailPanel";
 import { SkillListWithRatings } from "@/components/SkillListWithRatings";
@@ -24,12 +24,14 @@ function viewHref(
   categoryId?: string | null,
   skillId?: string | null,
   sort?: string | null,
+  q?: string | null,
 ) {
   const params = new URLSearchParams();
   if (view && view !== "list") params.set("view", view);
   if (categoryId) params.set("categoryId", categoryId);
   if (skillId) params.set("skillId", skillId);
   if (sort) params.set("sort", sort);
+  if (q) params.set("q", q);
   const qs = params.toString();
   return `/p/${packId}/skills${qs ? `?${qs}` : ""}`;
 }
@@ -118,7 +120,7 @@ function orderedSkills(pack: any, sort: string | null): any[] {
 
 export default async function PackSkillsPage(props: {
   params: Promise<{ packId: string }>;
-  searchParams?: Promise<{ view?: string; categoryId?: string; skillId?: string; sort?: string }>;
+  searchParams?: Promise<{ view?: string; categoryId?: string; skillId?: string; sort?: string; q?: string }>;
 }) {
   const { packId } = await props.params;
   const sp = (await props.searchParams) ?? {};
@@ -130,24 +132,14 @@ export default async function PackSkillsPage(props: {
   const categoryId = sp.categoryId ? String(sp.categoryId) : null;
   const selectedSkillId = sp.skillId ? String(sp.skillId) : null;
   const sort = sp.sort ? String(sp.sort) : "category";
+  const q = sp.q ? String(sp.q).trim() : "";
   const normalizedSort = sort === "number" ? "level" : sort;
 
   const session = await getServerSession(authOptions);
   const email = session?.user?.email;
   const user = email ? await prisma.user.findUnique({ where: { email } }) : null;
 
-  const hasPlan = await (async () => {
-    if (!user) return false;
-    const count = await prisma.skillRating.count({ where: { userId: user.id, packId } });
-    return count > 0;
-  })();
-
-  const wizardAllowed = !!user && !hasPlan;
-
-  // If someone deep-links to wizard but it isn't relevant, bounce to list.
-  if (view === "wizard" && !wizardAllowed) {
-    redirect(viewHref(packId, "list", categoryId, selectedSkillId, sort));
-  }
+  const ratingsAllowed = true;
 
   const skillNumberById = buildSkillNumberById(pack);
 
@@ -174,18 +166,33 @@ export default async function PackSkillsPage(props: {
         <CardContent className="space-y-6">
           <div className="flex flex-wrap items-center gap-2">
             <Button asChild variant={view === "list" ? "secondary" : "outline"} className="h-9 rounded-full">
-              <Link href={viewHref(packId, "list", categoryId, selectedSkillId, sort)}>View as list</Link>
+              <Link href={viewHref(packId, "list", categoryId, selectedSkillId, sort, q)}>View as list</Link>
             </Button>
             <Button asChild variant={view === "tree" ? "secondary" : "outline"} className="h-9 rounded-full">
-              <Link href={viewHref(packId, "tree", categoryId, null, sort)}>View as skills tree</Link>
+              <Link href={viewHref(packId, "tree", categoryId, null, sort, q)}>View as skills tree</Link>
             </Button>
-            {wizardAllowed ? (
+            {ratingsAllowed ? (
               <Button asChild variant={view === "wizard" ? "secondary" : "outline"} className="h-9 rounded-full">
-                <Link href={viewHref(packId, "wizard", null, null, sort)}>Wizard</Link>
+                <Link href={viewHref(packId, "wizard", null, null, sort, q)}>Ratings</Link>
               </Button>
             ) : null}
 
             <div className="ml-auto" />
+
+            <form action={`/p/${packId}/skills`} method="get" className="flex items-center gap-2">
+              <input type="hidden" name="view" value={view} />
+              {categoryId ? <input type="hidden" name="categoryId" value={categoryId} /> : null}
+              {selectedSkillId && view !== "tree" ? <input type="hidden" name="skillId" value={selectedSkillId} /> : null}
+              {sort ? <input type="hidden" name="sort" value={sort} /> : null}
+              <input
+                name="q"
+                defaultValue={q}
+                placeholder="Search skills"
+                className="h-9 rounded-full border px-3 text-sm"
+                aria-label="Search skills in this pack"
+              />
+              <Button type="submit" variant="outline" className="h-9 rounded-full">Search</Button>
+            </form>
 
             {!user ? (
               <GoogleSignInLink
@@ -202,16 +209,18 @@ export default async function PackSkillsPage(props: {
               unitsById={pack.unitsById ?? {}}
               manifest={pack.manifest}
               skillLinks={pack.skillLinks ?? []}
+              searchQuery={q}
             />
           ) : view === "wizard" ? (
-            <AssessmentWizard
-              packId={packId}
-              categories={(pack.manifest?.categories ?? []) as any[]}
-              skills={(pack.skills ?? []) as any[]}
-              onDone={() => {
-                // no-op; server page will refresh on navigation
-              }}
-            />
+            <Card>
+              <CardHeader>
+                <CardTitle>Ratings</CardTitle>
+                <CardDescription>Use fast RAG controls to rate lots of topics quickly.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <SkillMatrix packId={packId} manifest={pack.manifest} skills={pack.skills} />
+              </CardContent>
+            </Card>
           ) : (
             <div className="grid gap-6 md:grid-cols-2">
               <Card>
@@ -233,7 +242,7 @@ export default async function PackSkillsPage(props: {
                         variant={sort === "category" ? "secondary" : "outline"}
                         className="rounded-full"
                       >
-                        <Link href={viewHref(packId, "list", categoryId, selectedSkillId, "category")}>Sort by: category</Link>
+                        <Link href={viewHref(packId, "list", categoryId, selectedSkillId, "category", q)}>Sort by: category</Link>
                       </Button>
                       <Button
                         asChild
@@ -241,7 +250,7 @@ export default async function PackSkillsPage(props: {
                         variant={normalizedSort === "level" ? "secondary" : "outline"}
                         className="rounded-full"
                       >
-                        <Link href={viewHref(packId, "list", categoryId, selectedSkillId, "level")}>Sort by: level</Link>
+                        <Link href={viewHref(packId, "list", categoryId, selectedSkillId, "level", q)}>Sort by: level</Link>
                       </Button>
                     </div>
                   </div>
@@ -255,6 +264,7 @@ export default async function PackSkillsPage(props: {
                     sort={sort}
                     manifest={pack.manifest}
                     skillNumberById={skillNumberById}
+                    searchQuery={q}
                   />
                 </CardContent>
               </Card>

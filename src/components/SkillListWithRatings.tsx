@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
+
 import { cn } from "@/lib/utils";
 
 type Skill = {
@@ -29,6 +30,7 @@ export function SkillListWithRatings({
   sort,
   manifest,
   skillNumberById,
+  searchQuery,
 }: {
   packId: string;
   skills: Skill[];
@@ -37,15 +39,18 @@ export function SkillListWithRatings({
   sort?: string | null;
   manifest?: Manifest;
   skillNumberById?: Record<string, number>;
+  searchQuery?: string;
 }) {
   const router = useRouter();
   const [expandedHubs, setExpandedHubs] = useState<Record<string, boolean>>({});
+  const q = (searchQuery || "").trim().toLowerCase();
 
   const allRows = useMemo(() => {
     const paramsBase = new URLSearchParams();
     paramsBase.set("view", "list");
     if (categoryId) paramsBase.set("categoryId", String(categoryId));
     if (sort) paramsBase.set("sort", String(sort));
+    if (searchQuery) paramsBase.set("q", String(searchQuery));
 
     return skills.map((s) => {
       const id = String(s.id);
@@ -55,7 +60,7 @@ export function SkillListWithRatings({
       const href = `/p/${packId}/skills?${params.toString()}`;
       return { s, id, isSelected, href };
     });
-  }, [skills, selectedSkillId, packId, categoryId, sort]);
+  }, [skills, selectedSkillId, packId, categoryId, sort, searchQuery]);
 
   const rows = useMemo(() => {
     // "Hubs-only" list: show only sub-section hub dots, then expand to reveal children.
@@ -81,6 +86,32 @@ export function SkillListWithRatings({
     }
     return map;
   }, [skills]);
+
+  const filteredRows = useMemo(() => {
+    if (!q) return rows;
+
+    const byId = new Map(allRows.map((r) => [r.id, r] as const));
+    const matches = (r: any) => {
+      const text = [r.id, r.s?.name, r.s?.quadrant, r.s?.ring, r.s?.categoryId, r.s?.levelId, ...(r.s?.kitTags || [])]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+      return text.includes(q);
+    };
+
+    const matched = new Set(rows.filter(matches).map((r) => r.id));
+
+    // Include hubs when any of their linked children match the search.
+    for (const [hubId, childIds] of childrenByHubId.entries()) {
+      const childMatch = childIds.some((id) => {
+        const c = byId.get(id);
+        return c ? matches(c) : false;
+      });
+      if (childMatch) matched.add(hubId);
+    }
+
+    return rows.filter((r) => matched.has(r.id));
+  }, [rows, q, allRows, childrenByHubId]);
 
   const isHubSkill = (s: any) => {
     const id = String(s?.id ?? "");
@@ -123,7 +154,7 @@ export function SkillListWithRatings({
       const out: { key: string; title: string; items: typeof rows }[] = [];
       const byKey: Record<string, typeof rows> = {};
 
-      for (const r of rows) {
+      for (const r of filteredRows) {
         const key = String((r.s as any).levelId ?? "").trim() || "unknown";
         byKey[key] ||= [];
         byKey[key].push(r);
@@ -147,7 +178,7 @@ export function SkillListWithRatings({
       const out: { key: string; title: string; items: typeof rows }[] = [];
       const byKey: Record<string, typeof rows> = {};
 
-      for (const r of rows) {
+      for (const r of filteredRows) {
         const key = String((r.s as any).categoryId ?? "").trim() || "uncategorised";
         byKey[key] ||= [];
         byKey[key].push(r);
@@ -168,8 +199,8 @@ export function SkillListWithRatings({
     }
 
     // number / unknown → no headings
-    return [{ key: "all", title: "", items: expandItems(rows) as any }];
-  }, [rows, sort, manifest, categoryTitleById, levelTitleById, expandedHubs, childrenByHubId, allRows]);
+    return [{ key: "all", title: "", items: expandItems(filteredRows) as any }];
+  }, [filteredRows, sort, manifest, categoryTitleById, levelTitleById, expandedHubs, childrenByHubId, allRows]);
 
   function Row({ s, id, isSelected, href, isChild, parentId }: any) {
     const n = skillNumberById?.[String(id)] ?? null;
@@ -229,6 +260,9 @@ export function SkillListWithRatings({
 
   return (
     <div className="space-y-4">
+      {groups.every((g) => !g.items.length) ? (
+        <div className="text-sm text-muted-foreground">No skills match your search.</div>
+      ) : null}
       {groups.map((g) => (
         <div key={g.key} className="space-y-2">
           {g.title ? (

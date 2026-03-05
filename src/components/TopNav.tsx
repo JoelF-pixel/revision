@@ -53,31 +53,40 @@ export function TopNav() {
   const { data: session } = useSession();
   const isAuthed = Boolean((session as any)?.user);
 
-  const [packId, setPackId] = useState<string>("govuk-prototyping");
+  const packIds = useMemo(() => Object.keys((contentIndex as any).packs || {}), []);
+  const defaultPackId = ((contentIndex as any).defaultPackId as string) || packIds[0] || "";
+
+  const [packId, setPackId] = useState<string>(defaultPackId);
   const showGoogleBranding = getAuthProviderId() === "google";
 
   const section = useMemo(() => getSectionFromPathname(pathname), [pathname]);
 
-  const packIds = useMemo(() => Object.keys((contentIndex as any).packs || {}), []);
-
   useEffect(() => {
     const fromPath = getPackFromPathname(pathname);
-    if (fromPath) {
+    if (fromPath && packIds.includes(fromPath)) {
       setPackId(fromPath);
       return;
     }
+
     try {
       const stored = localStorage.getItem(PACK_STORAGE_KEY) || localStorage.getItem(LEGACY_PACK_STORAGE_KEY);
       if (stored && packIds.includes(stored)) {
         setPackId(stored);
-        // Don't auto-redirect from / — the root page is the pack picker.
-        // (Auto-redirecting causes the pack selector to flash open then close.)
+        return;
+      }
+
+      // Stored pack is stale (eg removed pack): reset to current default.
+      if (stored && !packIds.includes(stored)) {
+        localStorage.removeItem(PACK_STORAGE_KEY);
+        localStorage.removeItem(LEGACY_PACK_STORAGE_KEY);
       }
     } catch {
       // ignore
     }
+
+    setPackId(defaultPackId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname, defaultPackId, packIds]);
 
   const packName = ((contentIndex as any).packs?.[packId]?.manifest?.name as string) ?? packId;
 
